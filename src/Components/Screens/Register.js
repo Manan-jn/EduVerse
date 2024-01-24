@@ -14,6 +14,7 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const [user, setUser] = useState({});
+  const [role, setRole] = useState("student");
 
   const userDb = collection(firestore, "users");
   //   onAuthStateChanged(auth, (currentUser) => {
@@ -25,6 +26,7 @@ const Register = () => {
       await setDoc(doc(firestore, "users", res.user.uid), {
         uid: res.user.uid,
         email: email,
+        role: role,
       });
 
       navigate(`/home`);
@@ -48,6 +50,19 @@ const Register = () => {
           setPassword(event.target.value);
         }}
       />
+      <label>Role:</label>
+      <select
+        name="role"
+        value={role}
+        onChange={(event) => {
+          setRole(event.target.value);
+        }}
+      >
+        <option value="student">Student</option>
+        <option value="parent">Parent</option>
+        <option value="teacher">Teacher</option>
+        <option value="communityMember">Community Member</option>
+      </select>
       <button onClick={register}>Register</button>
     </div>
   );
