@@ -7,6 +7,11 @@ import { auth } from "../../firebase-config";
 import { doc } from "firebase/firestore";
 import { firestore } from "../../firebase-config";
 import { AuthContext } from "../../context/AuthContext";
+import StudentDashboard from "./StudentDashboard";
+import TeacherDashboard from "./TeacherDashboard";
+import ParentDashboard from "./ParentDashboard";
+import CommunityDashboard from "./CommunityDashboard";
+
 
 const Home = ({ route }) => {
   const [user, setUser] = useState({});
@@ -31,14 +36,18 @@ const Home = ({ route }) => {
     currentUser.uid && getUser();
   }, [currentUser.uid]);
 
-  const logout = async () => {};
+  const logout = async () => { };
   return (
     <div>
       <h3>Home</h3>
       <p>Home page</p>
-      {user && <p>{user.email}</p>}
-      {user && <p>{user.role}</p>}
+
       <button onClick={() => signOut(auth)}> SignOut</button>
+      {user.role === "student" && <StudentDashboard />}
+      {user.role === "parent" && <ParentDashboard />}
+      {user.role === "teacher" && <TeacherDashboard />}
+      {user.role === "communityMember" && <CommunityDashboard />}
+
     </div>
   );
 };

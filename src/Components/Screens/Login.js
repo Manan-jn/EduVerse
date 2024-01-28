@@ -18,11 +18,12 @@ const Login = () => {
       );
       const user = userCredential.user;
       console.log(user);
+      navigate("/home");
     } catch (error) {
       console.log(error);
     }
-    navigate("/home");
   };
+
   return (
     <div>
       <h3>Login</h3>
@@ -38,7 +39,7 @@ const Login = () => {
           setPassword(event.target.value);
         }}
       />
-      <button onClick={Login}>Login</button>
+      <button onClick={login}>Login</button>
     </div>
   );
 };
