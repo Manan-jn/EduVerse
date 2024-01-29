@@ -2,6 +2,9 @@ import "./App.css";
 import Register from "./Components/Screens/Register";
 import Login from "./Components/Screens/Login";
 import Home from "./Components/Screens/Home";
+import DigitalClassroom from "./Components/Screens/DigitalClassroom";
+import StudentDashboard from "./Components/Screens/StudentDashboard";
+import TeacherDashboard from "./Components/Screens/TeacherDashboard";
 import { AuthContext } from "./context/AuthContext";
 import { useContext } from "react";
 
@@ -36,6 +39,9 @@ function App() {
         <Route path="/login" element={<LoginRoute element={<Login />} />} />
         <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/digital" element={<DigitalClassroom />} />
+        <Route path="/student" element={<StudentDashboard />} />
+        <Route path="/teacher" element={<TeacherDashboard />} />
       </Routes>
     </Router>
   );

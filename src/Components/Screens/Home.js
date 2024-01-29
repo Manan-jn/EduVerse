@@ -1,17 +1,28 @@
 import React from "react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useState, useContext } from "react";
 import { getDoc, onSnapshot } from "firebase/firestore";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase-config";
-import { doc } from "firebase/firestore";
 import { firestore } from "../../firebase-config";
+import { addDoc, collection, setDoc, doc, updateDoc } from "firebase/firestore";
+import { Col, Row, Statistic } from "antd";
+import StudentDashboard from "./StudentDashboard";
+import TeacherDashboard from "./TeacherDashboard";
+import ParentDashboard from "./ParentDashboard";
 import { AuthContext } from "../../context/AuthContext";
+import { Worker, Viewer } from "@react-pdf-viewer/core";
+import "@react-pdf-viewer/core/lib/styles/index.css";
+import axios from "axios";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { useNavigate } from "react-router-dom";
 
 const Home = ({ route }) => {
   const [user, setUser] = useState({});
   const { currentUser } = useContext(AuthContext);
-  console.log(currentUser);
+  const navigate = useNavigate();
+  const uid = currentUser.uid;
+  console.log(currentUser.uid);
 
   useEffect(() => {
     const getUser = () => {
@@ -30,14 +41,11 @@ const Home = ({ route }) => {
 
     currentUser.uid && getUser();
   }, [currentUser.uid]);
-
-  const logout = async () => {};
   return (
     <div>
-      <h3>Home</h3>
-      <p>Home page</p>
-      {user && <p>{user.email}</p>}
-      {user && <p>{user.role}</p>}
+      {user.role === "student" && <StudentDashboard />}
+      {user.role === "parent" && <ParentDashboard />}
+      {user.role === "teacher" && <TeacherDashboard />}
       <button onClick={() => signOut(auth)}> SignOut</button>
     </div>
   );
