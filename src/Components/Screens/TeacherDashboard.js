@@ -6,6 +6,7 @@ import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { Worker, Viewer } from "@react-pdf-viewer/core";
 import { AuthContext } from "../../context/AuthContext";
 import "@react-pdf-viewer/core/lib/styles/index.css";
+import { FallingLines } from "react-loader-spinner";
 import axios from "axios";
 import {
   addDoc,
@@ -26,6 +27,7 @@ const TeacherDashboard = () => {
   const [pdfData, setPdfData] = React.useState();
   const uid = currentUser.uid;
   const [slideId, setSlideId] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const [comment, setComment] = useState("");
   const [title, setTitle] = useState("");
@@ -148,6 +150,7 @@ const TeacherDashboard = () => {
     console.log("start training!");
     if (file) {
       try {
+        setLoading(true);
         const uploaded = await uploadFile(file);
         setProgress(20);
         console.log("uploaded" + uploaded);
@@ -163,6 +166,7 @@ const TeacherDashboard = () => {
         } else {
           console.log("shit");
         }
+        setLoading(false);
       } catch (error) {
         console.error("Error uploading file:", error);
       }
@@ -203,6 +207,16 @@ const TeacherDashboard = () => {
       <div>
         <input type="file" onChange={handleChange} />
         <button onClick={train}>Train</button>
+        <div>
+          {loading && (
+            <FallingLines
+              color="#4fa94d"
+              width="100"
+              visible={true}
+              ariaLabel="falling-circles-loading"
+            />
+          )}
+        </div>
         {successMsg && <p>{successMsg}</p>}
         {pdfUrl && (
           <div>
