@@ -22,7 +22,7 @@ const PdfView = ({ pdfUrl, dataIn }) => {
   const uid = currentUser.uid;
 
   const handleComplete = async () => {
-    const docRef = doc(firestore, "users", uid);
+    const docRef = doc(firestore, "students", uid);
 
     try {
       // Fetch the current data from the document
@@ -32,15 +32,15 @@ const PdfView = ({ pdfUrl, dataIn }) => {
         // If the document exists, update the array or create a new one
         const userData = docSnap.data();
         const existingArray = userData.completedSlideIds || []; // Assume 'slideIds' is the array field
-        let timeL = userData.time || 0;
+        let timeL = userData.timeLearned || 0;
         let lecturesComp = userData.lecturesCompleted || 0;
 
         // Check if dataIn.slideId already exists in the array
         if (!existingArray.includes(dataIn.slideID)) {
           existingArray.push(dataIn.slideID); // Add dataIn.slideId to the array
         }
-        timeL = timeL + dataIn.time;
-        lecturesComp = lecturesComp + 1;
+        timeL = parseInt(timeL, 10) + parseInt(dataIn.time, 10);
+        lecturesComp = parseInt(lecturesComp, 10) + 1;
 
         // Update the document with the modified data
         await updateDoc(docRef, {
@@ -54,10 +54,32 @@ const PdfView = ({ pdfUrl, dataIn }) => {
       // Handle any errors here
       console.error("Error updating document:", error);
     }
+
+    const slideRef = doc(firestore, "slides", dataIn.slideID);
+
+    try {
+      const docSnap = await getDoc(slideRef);
+      if (docSnap.exists()) {
+        const foundData = docSnap.data();
+        const existingStudents = foundData.students || [];
+        let totalHours = foundData.totalHours || 0;
+        if (!existingStudents.includes(uid)) {
+          existingStudents.push(uid);
+        }
+        totalHours = parseInt(totalHours, 10) + parseInt(dataIn.time, 10);
+
+        await updateDoc(slideRef, {
+          students: existingStudents,
+          totalHours: totalHours,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
   useEffect(() => {
     const getInfo = async () => {
-      const docRef = doc(firestore, "users", uid);
+      const docRef = doc(firestore, "students", uid);
       const docSnap = await getDoc(docRef);
       const userData = docSnap.data();
       const existingArray = userData.completedSlideIds || [];

@@ -29,6 +29,9 @@ const Register = () => {
   const [user, setUser] = useState({});
   const [role, setRole] = useState("student");
 
+  const [tclass, settClass] = useState("");
+  const [subject, setSubject] = useState("");
+
   const userDb = collection(firestore, "users");
   //   onAuthStateChanged(auth, (currentUser) => {
   //     setUser(currentUser);
@@ -37,17 +40,55 @@ const Register = () => {
     e.preventDefault();
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password);
+      if (role === "student") {
+        await setDoc(doc(firestore, "students", res.user.uid), {
+          uid: res.user.uid,
+          email: email,
+          role: role,
+          name: name,
+          school: school,
+          city: city,
+          country: country,
+          dob: dob,
+        });
+      }
+      if (role === "teacher") {
+        await setDoc(doc(firestore, "teachers", res.user.uid), {
+          uid: res.user.uid,
+          email: email,
+          role: role,
+          name: name,
+          school: school,
+          city: city,
+          country: country,
+          class: tclass,
+          subject: subject,
+        });
+      }
+      if (role === "parent") {
+        await setDoc(doc(firestore, "parents", res.user.uid), {
+          uid: res.user.uid,
+          email: email,
+          role: role,
+          name: name,
+        });
+      }
+      if (role === "community") {
+        await setDoc(doc(firestore, "community", res.user.uid), {
+          uid: res.user.uid,
+          email: email,
+          role: role,
+          name: name,
+          city: city,
+          country: country,
+        });
+      }
       await setDoc(doc(firestore, "users", res.user.uid), {
         uid: res.user.uid,
         email: email,
         role: role,
         name: name,
-        school: school,
-        city: city,
-        country: country,
-        dob: dob,
       });
-
       navigate(`/home`);
     } catch (error) {
       console.log(error);
@@ -118,62 +159,179 @@ const Register = () => {
           <option value="parent">Parent</option>
           <option value="community">Community Member</option>
         </Select>
-        <div className="mb-2 block">
-          <Label htmlFor="dob" value="Your DOB" />
-        </div>
-        <Datepicker
-          id="dob"
-          required
-          onChange={(event) => {
-            setDOB(event.target.value);
-          }}
-          weekStart={1} // Monday
-        />
-        <div>
-          <div className="mb-2 block">
-            <Label htmlFor="school" value="Your School" />
+        {role === "student" && (
+          <div>
+            <div className="mb-2 block">
+              <Label htmlFor="dob" value="Your DOB" />
+            </div>
+            <Datepicker
+              id="dob"
+              required
+              onChange={(event) => {
+                setDOB(event.target.value);
+              }}
+              weekStart={1} // Monday
+            />
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="school" value="Your School" />
+              </div>
+              <TextInput
+                id="school"
+                type="text"
+                required
+                shadow
+                value={school}
+                onChange={(event) => {
+                  setSchool(event.target.value);
+                }}
+              />
+            </div>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="city" value="Your City" />
+              </div>
+              <TextInput
+                id="city"
+                type="text"
+                required
+                shadow
+                value={city}
+                onChange={(event) => {
+                  setCity(event.target.value);
+                }}
+              />
+            </div>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="country" value="Your Country" />
+              </div>
+              <TextInput
+                id="country"
+                type="text"
+                required
+                shadow
+                value={country}
+                onChange={(event) => {
+                  setCountry(event.target.value);
+                }}
+              />
+            </div>
           </div>
-          <TextInput
-            id="school"
-            type="text"
-            required
-            shadow
-            value={school}
-            onChange={(event) => {
-              setSchool(event.target.value);
-            }}
-          />
-        </div>
-        <div>
-          <div className="mb-2 block">
-            <Label htmlFor="city" value="Your City" />
+        )}
+        {role === "teacher" && (
+          <div>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="class" value="Your Class" />
+              </div>
+              <TextInput
+                id="class"
+                type="text"
+                required
+                shadow
+                value={tclass}
+                onChange={(event) => {
+                  settClass(event.target.value);
+                }}
+              />
+            </div>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="subject" value="Your Subject" />
+              </div>
+              <TextInput
+                id="subject"
+                type="text"
+                required
+                shadow
+                value={subject}
+                onChange={(event) => {
+                  setSubject(event.target.value);
+                }}
+              />
+            </div>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="school" value="Your School" />
+              </div>
+              <TextInput
+                id="school"
+                type="text"
+                required
+                shadow
+                value={school}
+                onChange={(event) => {
+                  setSchool(event.target.value);
+                }}
+              />
+            </div>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="city" value="Your City" />
+              </div>
+              <TextInput
+                id="city"
+                type="text"
+                required
+                shadow
+                value={city}
+                onChange={(event) => {
+                  setCity(event.target.value);
+                }}
+              />
+            </div>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="country" value="Your Country" />
+              </div>
+              <TextInput
+                id="country"
+                type="text"
+                required
+                shadow
+                value={country}
+                onChange={(event) => {
+                  setCountry(event.target.value);
+                }}
+              />
+            </div>
           </div>
-          <TextInput
-            id="city"
-            type="text"
-            required
-            shadow
-            value={city}
-            onChange={(event) => {
-              setCity(event.target.value);
-            }}
-          />
-        </div>
-        <div>
-          <div className="mb-2 block">
-            <Label htmlFor="country" value="Your Country" />
+        )}
+        {role === "community" && (
+          <div>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="city" value="Your City" />
+              </div>
+              <TextInput
+                id="city"
+                type="text"
+                required
+                shadow
+                value={city}
+                onChange={(event) => {
+                  setCity(event.target.value);
+                }}
+              />
+            </div>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="country" value="Your Country" />
+              </div>
+              <TextInput
+                id="country"
+                type="text"
+                required
+                shadow
+                value={country}
+                onChange={(event) => {
+                  setCountry(event.target.value);
+                }}
+              />
+            </div>
           </div>
-          <TextInput
-            id="country"
-            type="text"
-            required
-            shadow
-            value={country}
-            onChange={(event) => {
-              setCountry(event.target.value);
-            }}
-          />
-        </div>
+        )}
         <Button type="submit" style={{ color: "blue" }}>
           Register new account
         </Button>

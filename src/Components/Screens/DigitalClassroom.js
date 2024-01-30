@@ -5,7 +5,7 @@ import { Worker, Viewer } from "@react-pdf-viewer/core";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import { Radio, Space, Tabs } from "antd";
 import { AuthContext } from "../../context/AuthContext";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, onSnapshot, query, collection } from "firebase/firestore";
 import { firestore } from "../../firebase-config";
 import { useNavigate } from "react-router-dom";
 import PdfView from "./PdfView";
@@ -67,19 +67,9 @@ const DigitalClassroom = () => {
         setDataInfo(fetchData);
       }
     };
-
     resul();
   }, [pdfName]);
 
-  // const tabs = new Array(3).fill(null).map((_, i) => {
-  //   const id = String(i + 1);
-  //   return {
-  //     label: `Tab ${id}`,
-  //     key: id,
-  //     children: `Content of Tab ${id}`,
-  //   };
-  // });
-  // Check if pdfUrl is an array before mapping
   const tabs =
     Array.isArray(pdfUrl) && Array.isArray(dataInfo)
       ? pdfUrl.map((url, i) => {

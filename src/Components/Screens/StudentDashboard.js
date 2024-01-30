@@ -23,7 +23,7 @@ const StudentDashboard = () => {
     const getUser = async () => {
       try {
         setLoading(true);
-        const userDoc = doc(firestore, "users", currentUser.uid);
+        const userDoc = doc(firestore, "students", currentUser.uid);
         const unsubscribe = onSnapshot(userDoc, (doc) => {
           setUser(doc.data());
           setLoading(false);
@@ -40,9 +40,7 @@ const StudentDashboard = () => {
     };
     currentUser.uid && getUser();
   }, [currentUser.uid]);
-  const handleDigital = () => {
-    navigate(`/digital`);
-  };
+
   return (
     <div>
       <NavBar />
@@ -65,21 +63,29 @@ const StudentDashboard = () => {
               />
             </div>
           )}
-          <div style={{ width: "50%" }}>
-            <Row gutter={16}>
+          <div style={{ width: "100%" }}>
+            <Row gutter={20}>
               {user && user.timeLearned && (
                 <Col span={12}>
                   <Statistic title="Hours Learned" value={user.timeLearned} />
                 </Col>
               )}
-              <Col span={12}>
-                {user && user.lecturesCompleted && (
+              {user && user.lecturesCompleted && (
+                <Col span={12}>
                   <Statistic
                     title="Lectures Completed"
                     value={user.lecturesCompleted}
                   />
-                )}
-              </Col>
+                </Col>
+              )}
+              {user && user.learningStreak && (
+                <Col span={12}>
+                  <Statistic
+                    title="Learning Streak"
+                    value={user.learningStreak}
+                  />
+                </Col>
+              )}
             </Row>
           </div>
           <CardTemp />
