@@ -4,6 +4,8 @@ const YOUR_CLIENT_ID = '50545024716-tuchfr1dkldehq5p1d4sjbusi5rfeset.apps.google
 const YOUR_REDIRECT_URI = 'http://localhost:3000/home';
 
 const GoogleClassroomIntegration = () => {
+    const upcomingCoursesList = [];
+
     const [courses, setCourses] = useState([]);
     const [upcomingCourses, setUpcomingCourses] = useState([]);
 
@@ -55,6 +57,7 @@ const GoogleClassroomIntegration = () => {
 
     const getCoursesWork = async () => {
         const upcomingCoursesList = [];
+        const fetchPromises = [];
 
         for (const course of courses) {
             const courseId = course.id;
@@ -66,48 +69,56 @@ const GoogleClassroomIntegration = () => {
                 `https://classroom.googleapis.com/v1/courses/${courseId}/courseWork?access_token=${params['access_token']}`
             );
 
-            xhr.onreadystatechange = function (e) {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    const courseworkResponse = JSON.parse(xhr.responseText);
-                    const coursework = courseworkResponse.courseWork || [];
+            const fetchPromise = new Promise((resolve, reject) => {
+                xhr.onreadystatechange = function (e) {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        const courseworkResponse = JSON.parse(xhr.responseText);
+                        const coursework = courseworkResponse.courseWork || [];
 
-                    console.log(`Course: ${course.name} (${course.id})`);
 
-                    coursework.forEach((work) => {
-                        console.log(`  - Coursework: ${work.title}`);
+                        coursework.forEach((work) => {
+                            console.log(`  - Coursework: ${work.title}`);
 
-                        if (!work.dueDate) {
-                            console.log('    - Due Date: No due date');
-                            return;
-                        }
+                            if (!work.dueDate) {
+                                console.log('    - Due Date: No due date');
+                                return;
+                            }
 
-                        const dueDateObject = work.dueDate;
-                        const dueDate = new Date(dueDateObject.year, dueDateObject.month - 1, dueDateObject.day);
-                        console.log(`    - Due Date: ${dueDate.toLocaleDateString()}`);
+                            const dueDateObject = work.dueDate;
+                            const dueDate = new Date(dueDateObject.year, dueDateObject.month - 1, dueDateObject.day);
+                            console.log(`    - Due Date: ${dueDate.toLocaleDateString()}`);
 
-                        const today = new Date();
+                            const today = new Date();
 
-                        if (dueDate > today) {
-                            const daysRemaining = Math.ceil((dueDate - today) / (1000 * 60 * 60 * 24));
-                            console.log(`    - Upcoming: ${daysRemaining} days remaining.`);
-                            upcomingCoursesList.push({
-                                courseTitle: course.name,
-                                courseWorkTitle: work.title,
-                                daysRemaining: daysRemaining,
-                            });
-                        }
-                    });
-                } else if (xhr.readyState === 4 && xhr.status === 401) {
-                    oauth2SignIn();
-                }
-            };
+                            if (dueDate > today) {
+                                const daysRemaining = Math.ceil((dueDate - today) / (1000 * 60 * 60 * 24));
+                                console.log(`    - Upcoming: ${daysRemaining} days remaining.`);
+                                upcomingCoursesList.push({
+                                    courseTitle: course.name,
+                                    courseWorkTitle: work.title,
+                                    daysRemaining: daysRemaining,
+                                });
+                            }
+                        });
+                        resolve();
+                    } else if (xhr.readyState === 4 && xhr.status === 401) {
+                        reject();
+                    }
+                };
 
-            xhr.send(null);
+                xhr.send(null);
+            });
+
+            fetchPromises.push(fetchPromise);
         }
 
-        setUpcomingCourses(upcomingCoursesList);
+        try {
+            await Promise.all(fetchPromises);
+            setUpcomingCourses(upcomingCoursesList);
+        } catch (error) {
+            oauth2SignIn();
+        }
     };
-
 
     const oauth2SignIn = () => {
         const oauth2Endpoint = 'https://accounts.google.com/o/oauth2/v2/auth';
@@ -143,7 +154,6 @@ const GoogleClassroomIntegration = () => {
     };
 
     useEffect(() => {
-        getCoursesWork();
     }, []);
 
     return (
