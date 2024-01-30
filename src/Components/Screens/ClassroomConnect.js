@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Button, Flex } from 'antd';
 
 const YOUR_CLIENT_ID = '50545024716-tuchfr1dkldehq5p1d4sjbusi5rfeset.apps.googleusercontent.com';
 const YOUR_REDIRECT_URI = 'http://localhost:3000/home';
@@ -157,18 +158,26 @@ const GoogleClassroomIntegration = () => {
     }, []);
 
     return (
-        <div>
-            <div>
-                <h2>Upcoming Assignments</h2>
-                <ul>
-                    {upcomingCourses.map((upcomingCourse, index) => (
-                        <li key={index}>
-                            <strong>{upcomingCourse.courseTitle}</strong>: {upcomingCourse.courseWorkTitle} - Due in {upcomingCourse.daysRemaining} days
-                        </li>
-                    ))}
-                </ul>
-                <button onClick={connectGClassroom}>Connect with Google Classroom</button>
-            </div>
+        <div className="google-classroom-div">
+            <img
+                src="https://marvel-b1-cdn.bc0a.com/f00000000258271/www.studiesweekly.com/wp-content/uploads/2021/05/Google-Classroom-1050x525.jpg"  // Replace with your actual image URL
+                alt="Description of your image"
+                style={{ maxWidth: '100%', height: 'auto', borderRadius: '10px' }}
+            />
+            <h4 style={{ color: "#F9F871" }}>Integrate with Google Classroom</h4>
+            <Flex wrap="wrap" gap="small">
+                <Button type="primary" onClick={connectGClassroom}>
+                    Connect G Classroom
+                </Button>
+            </Flex>
+            <p><i>To display the list of <b>upcoming assignments</b> and their <b>due date</b>, click on the <b>Connect</b> button <u></u>after logging in!</i></p>
+            <ul>
+                {upcomingCourses.map((upcomingCourse, index) => (
+                    <li key={index}>
+                        <strong>{upcomingCourse.courseTitle}</strong>: {upcomingCourse.courseWorkTitle} - Due in {upcomingCourse.daysRemaining} days
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 };

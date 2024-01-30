@@ -4,6 +4,10 @@ import Login from "./Components/Screens/Login";
 import Home from "./Components/Screens/Home";
 import { AuthContext } from "./context/AuthContext";
 import { useContext } from "react";
+import DigitalClassroom from "./Components/Screens/DigitalClassroom";
+import NewsBot from './Components/Screens/Bots/NewsBot';
+import MentalHealthBot from "./Components/Screens/Bots/MentalHealthBot";
+import MathsBot from "./Components/Screens/Bots/MathsBot";
 
 import {
   BrowserRouter as Router,
@@ -36,6 +40,11 @@ function App() {
         <Route path="/login" element={<LoginRoute element={<Login />} />} />
         <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/digital" element={<DigitalClassroom />} />
+        <Route path="/mental" element={<MentalHealthBot />} />
+        <Route path="/news" element={<NewsBot />} />
+        <Route path="/maths" element={<MathsBot />} />
+
       </Routes>
     </Router>
   );

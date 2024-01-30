@@ -11,7 +11,8 @@ import StudentDashboard from "./StudentDashboard";
 import TeacherDashboard from "./TeacherDashboard";
 import ParentDashboard from "./ParentDashboard";
 import CommunityDashboard from "./CommunityDashboard";
-
+import "./Home.css"
+import { Button, Flex } from 'antd';
 
 const Home = ({ route }) => {
   const [user, setUser] = useState({});
@@ -37,17 +38,32 @@ const Home = ({ route }) => {
   }, [currentUser.uid]);
 
   const logout = async () => { };
+
+  const containerStyle = {
+    backgroundColor: "#323237",
+    color: "white",
+    padding: "20px",
+  };
+
   return (
-    <div>
-      <h3>Home</h3>
-      <p>Home page</p>
-
-      <button onClick={() => signOut(auth)}> SignOut</button>
-      {user.role === "student" && <StudentDashboard />}
-      {user.role === "parent" && <ParentDashboard />}
-      {user.role === "teacher" && <TeacherDashboard />}
-      {user.role === "communityMember" && <CommunityDashboard />}
-
+    <div style={containerStyle}>
+      <div className="header">
+        <div className="header-hi">{user && <h2>🙏 Hello <span style={{ color: "#D3FBD8" }}>{user.email}</span>!</h2>}</div>
+        <div className="header-button">
+          {/* <button onClick={() => signOut(auth)}> SignOut</button> */}
+          <Flex wrap="wrap" gap="small">
+            <Button type="primary" danger onClick={() => signOut(auth)}>
+              Sign Out
+            </Button>
+          </Flex>
+        </div>
+      </div>
+      <div className="dashboard">
+        {user.role === "student" && <StudentDashboard />}
+        {user.role === "parent" && <ParentDashboard />}
+        {user.role === "teacher" && <TeacherDashboard />}
+        {user.role === "communityMember" && <CommunityDashboard />}
+      </div>
     </div>
   );
 };

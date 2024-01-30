@@ -1,0 +1,183 @@
+.header{
+    display: flex;
+    align-items: center;
+    background-color: #3f3f46;
+    border-radius:10px;
+    justify-content: space-between;
+}
+
+.header-hi{
+    padding-left: 2%;
+}
+
+.header-button{
+    padding-right: 2%;
+}
+
+/* .dashboard-signimate{
+    display:flex;
+    flex-direction:row;
+
+} */
+
+.dashboard-classroom-morpheous{
+    display:flex;
+    flex-direction:column;
+    width:60%;
+}
+
+.dashboard-classroom-morpheous-signimate{
+    display:flex;
+    flex-direction:row;
+}
+
+.dashboard-personalised{
+    background-color: #3f3f46;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    padding: 2%;
+    margin: 1.5%;
+    width: 58%;
+    /* height: fit-content; */
+    width: 93%;
+    height: 47%;
+    margin-top: 2.5%;
+}
+
+.ai-animator{
+    background-color: #3f3f46;
+    border-radius:10px;
+    display: flex;
+    flex-direction:column;
+    padding: 2%;
+    margin: 1.5%;
+    width: 40%;
+    height: fit-content;
+}
+
+.student-dashboard-stats{
+    background-color: #3f3f46;
+    border-radius:10px;
+    display: flex;
+}
+
+.classroom-morpheous{
+    display:flex;
+    flex-direction:row;
+}
+
+.classrooms{
+    background-color: #3f3f46;
+    border-radius: 10px;
+    display: flex;
+    /* margin-top: 2%; */
+    width: 55%;
+    align-items: center;
+    flex-direction: column;
+    padding: 1%;
+    margin: 1.5%;
+}
+
+.digital-classroom{
+    background-color: #424464;
+    margin: 3%;
+    padding: 0.5%;
+    width:50%;
+    border-radius:10px;
+    padding-left: 2%;
+
+}
+
+.google-classroom{
+    padding:2.5%;
+    width:50%;
+    border-radius:10px;
+
+}
+
+.google-classroom-div{
+    background-color: #424464;
+    margin-top: 0%;
+    padding: 12.5%;
+    align-self: center;
+    border-radius:10px;
+
+}
+
+.morpheusai{
+    background-color: #3f3f46;
+    border-radius:10px;
+    display: flex;
+    flex-direction:column;
+    padding: 2%;
+    margin: 1.5%;
+    width: 40%;
+    height: fit-content;
+}
+
+.bots-competitions-skills{
+    display:flex;
+    flex-direction: row;
+}
+.bots-section{
+    background-color: #3f3f46;
+    border-radius:10px;
+    display: flex;
+    flex-direction:column;
+    padding: 2%;
+    margin: 1.5%;
+    width:40%;
+}
+
+.bot{
+    background-color: #424464;
+    padding:2%;
+    margin:2%;
+    border-radius:10px;
+    width: 50%;
+}
+
+.other-bots{
+    display:flex;
+    flex-direction:row;
+}
+
+.mental-health-bot{
+    background-color: #424464;
+    border-radius:10px;
+    width: 92%;
+    padding: 2%;
+    margin: 2%;
+    justify-content: center;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.skills-corner{
+    background-color: #3f3f46;
+    border-radius:10px;
+    display: flex;
+    flex-direction:column;
+    padding: 2%;
+    margin: 1.5%;
+    width:30%;
+}
+
+.competitions{
+    background-color: #3f3f46;
+    border-radius:10px;
+    display: flex;
+    flex-direction:column;
+    padding: 2%;
+    margin: 1.5%;
+    width:30%;
+}
+
+.bot-iframe{
+    background-color: #2b303e;
+    padding: 4%;
+    padding-left: 41%;
+    padding-right: 60%;
+}
