@@ -46,7 +46,7 @@ const Home = ({ route }) => {
       {user.role === "student" && <StudentDashboard />}
       {user.role === "parent" && <ParentDashboard />}
       {user.role === "teacher" && <TeacherDashboard />}
-      <button onClick={() => signOut(auth)}> SignOut</button>
+      {/* <button onClick={() => signOut(auth)}> SignOut</button> */}
     </div>
   );
 };

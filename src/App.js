@@ -5,6 +5,7 @@ import Home from "./Components/Screens/Home";
 import DigitalClassroom from "./Components/Screens/DigitalClassroom";
 import StudentDashboard from "./Components/Screens/StudentDashboard";
 import TeacherDashboard from "./Components/Screens/TeacherDashboard";
+import NavBar from "./Components/Screens/NavBar";
 import { AuthContext } from "./context/AuthContext";
 import { useContext } from "react";
 
@@ -42,6 +43,7 @@ function App() {
         <Route path="/digital" element={<DigitalClassroom />} />
         <Route path="/student" element={<StudentDashboard />} />
         <Route path="/teacher" element={<TeacherDashboard />} />
+        <Route path="/navbar" element={<NavBar />} />
       </Routes>
     </Router>
   );

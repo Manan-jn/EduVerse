@@ -7,6 +7,7 @@ import { Worker, Viewer } from "@react-pdf-viewer/core";
 import { AuthContext } from "../../context/AuthContext";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import { FallingLines } from "react-loader-spinner";
+import NavBar from "./NavBar";
 import axios from "axios";
 import {
   addDoc,
@@ -203,7 +204,7 @@ const TeacherDashboard = () => {
   };
   return (
     <div>
-      Teacher Dashboard
+      <NavBar />
       <div>
         <input type="file" onChange={handleChange} />
         <button onClick={train}>Train</button>
