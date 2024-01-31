@@ -17,31 +17,33 @@ const DigitalClassroom = () => {
 
   useEffect(() => {
     const resul = async () => {
-      await axios.get("http://localhost:3001/getpdf").then((res) => {
-        const pdfData = res.data;
-        // console.log("pdf data", pdfData);
-        const pdfUrls = [];
-        const pdfNames = [];
-        pdfData.forEach((item) => {
-          const bytes = item.pdf.data.data;
-          const name = item.name;
-          console.log("name", name);
-          pdfNames.push(name);
+      await axios
+        .get("https://markdown-pdf.onrender.com/getpdf")
+        .then((res) => {
+          const pdfData = res.data;
+          // console.log("pdf data", pdfData);
+          const pdfUrls = [];
+          const pdfNames = [];
+          pdfData.forEach((item) => {
+            const bytes = item.pdf.data.data;
+            const name = item.name;
+            console.log("name", name);
+            pdfNames.push(name);
 
-          let len = bytes.length;
-          let out = new Uint8Array(len);
+            let len = bytes.length;
+            let out = new Uint8Array(len);
 
-          while (len--) {
-            out[len] = bytes[len];
-          }
+            while (len--) {
+              out[len] = bytes[len];
+            }
 
-          const blob = new Blob([out], { type: "application/pdf" });
-          const temp = URL.createObjectURL(blob);
-          pdfUrls.push(temp);
+            const blob = new Blob([out], { type: "application/pdf" });
+            const temp = URL.createObjectURL(blob);
+            pdfUrls.push(temp);
+          });
+          setPdfUrl(pdfUrls);
+          setPdfName(pdfNames);
         });
-        setPdfUrl(pdfUrls);
-        setPdfName(pdfNames);
-      });
     };
     resul();
     console.log("DigitalClassroom");

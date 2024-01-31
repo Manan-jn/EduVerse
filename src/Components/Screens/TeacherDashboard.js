@@ -196,7 +196,7 @@ const TeacherDashboard = () => {
       const fetchedData = await fetch(url);
       const text = await fetchedData.text();
       console.log(text);
-      const apiEndpoint = "http://localhost:3001/getpdf";
+      const apiEndpoint = "https://markdown-pdf.onrender.com/getpdf";
 
       const postData = {
         markdownContent: text,
@@ -217,7 +217,7 @@ const TeacherDashboard = () => {
         slideNum: data, // Include the data in the request
       };
       const getResp = await axios.post(
-        "http://localhost:3001/getOnePdf",
+        "https://markdown-pdf.onrender.com/getOnePdf",
         getData,
         {
           headers: {
@@ -226,8 +226,8 @@ const TeacherDashboard = () => {
         }
       );
       setPdfData(getResp.data.pdf.data.data);
-
-      // console.log("Responseeee" + getResp.data.pdf.data.data);
+      console.log(getResp);
+      console.log("Responseeee" + getResp.data.pdf.data.data);
       if (getResp.data.pdf.data.data) {
         const bytes = getResp.data.pdf.data.data;
         // console.log("bytes" + bytes);

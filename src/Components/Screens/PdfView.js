@@ -82,9 +82,11 @@ const PdfView = ({ pdfUrl, dataIn }) => {
       const docRef = doc(firestore, "students", uid);
       const docSnap = await getDoc(docRef);
       const userData = docSnap.data();
-      const existingArray = userData.completedSlideIds || [];
-      if (existingArray.find((id) => id === dataIn.slideID) !== undefined) {
-        setComp(true);
+      if (userData !== undefined && userData.completedSlideIds !== undefined) {
+        const existingArray = userData.completedSlideIds || [];
+        if (existingArray.find((id) => id === dataIn.slideID) !== undefined) {
+          setComp(true);
+        }
       }
     };
     getInfo();
