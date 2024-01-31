@@ -9,17 +9,17 @@ import { doc, getDoc, onSnapshot, query, collection } from "firebase/firestore";
 import { firestore } from "../../firebase-config";
 import { useNavigate } from "react-router-dom";
 import PdfView from "./PdfView";
-import { Spin } from "antd";
+import { Spin, Typography } from "antd";
+const { Title } = Typography;
 
 const DigitalClassroom = () => {
   const [pdfUrl, setPdfUrl] = useState();
   const [pdfName, setPdfName] = useState();
   const [dataInfo, setDataInfo] = useState();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const resul = async () => {
-      setLoading(true);
       await axios
         .get("https://markdown-pdf.onrender.com/getpdf")
         .then((res) => {
@@ -90,20 +90,15 @@ const DigitalClassroom = () => {
 
   return (
     <div>
-      {loading && (
-        <Spin tip="Loading" size="large">
-          <div className="content" />
-        </Spin>
-      )}
-      {!loading && (
-        <div>
-          DigitalClassroom
-          <Tabs tabPosition="left" items={tabs} />
-          {/* <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
-        <Viewer fileUrl={pdfUrl} />
-      </Worker> */}
-        </div>
-      )}
+      <div style={{ textAlign: "center" }}>
+        <Title level={2}>Digital Classroom</Title>
+        {loading && (
+          <Spin tip="Loading" size="large">
+            <div className="content" />
+          </Spin>
+        )}
+        <Tabs tabPosition="left" items={tabs} />
+      </div>
     </div>
   );
 };
