@@ -362,8 +362,6 @@ const TeacherDashboard = () => {
           />
         </div>
         <button onClick={train}>Train</button>
-        {/* <input type="file" onChange={handleChange} /> */}
-        {/* <button onClick={train}>Train</button> */}
         <div>
           {loading && (
             <Button>

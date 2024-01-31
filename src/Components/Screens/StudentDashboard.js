@@ -17,7 +17,6 @@ const StudentDashboard = () => {
   const { currentUser } = useContext(AuthContext);
   const uid = currentUser.uid;
   const navigate = useNavigate();
-  const [successMsg, setSuccessMsg] = useState("");
 
   useEffect(() => {
     const getUser = async () => {
@@ -44,7 +43,6 @@ const StudentDashboard = () => {
   return (
     <div>
       <NavBar />
-      {successMsg && { successMsg }}
       {loading ? (
         <div className="text-center">
           <Spinner aria-label="Center-aligned spinner example" />

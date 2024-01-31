@@ -7,10 +7,12 @@ import { getDoc, onSnapshot } from "firebase/firestore";
 import { firestore } from "../../firebase-config";
 import { auth } from "../../firebase-config";
 import { useNavigate } from "react-router-dom";
+import { Spin } from "antd";
 
 const CardTemp = () => {
   const [user, setUser] = useState(null);
   const { currentUser } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
   const uid = currentUser.uid;
   const navigate = useNavigate();
 
@@ -35,6 +37,7 @@ const CardTemp = () => {
 
   const handleDigital = async () => {
     try {
+      setLoading(true);
       // Get the current date and time
       const currentDate = new Date();
       const currentTime = currentDate.getTime();
@@ -69,6 +72,7 @@ const CardTemp = () => {
           learningStreak: updatedLearningStreak,
         });
         console.log("Learning streak updated");
+        setLoading(false);
         navigate(`/digital`);
       }
     } catch (error) {
@@ -85,6 +89,7 @@ const CardTemp = () => {
         Here are the biggest enterprise technology acquisitions of 2021 so far,
         in reverse chronological order.
       </p>
+      {loading && <Spin />}
       <Button color="blue" onClick={handleDigital}>
         Learn More
         <svg
