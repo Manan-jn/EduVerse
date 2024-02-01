@@ -48,7 +48,7 @@ const Home = ({ route }) => {
   return (
     <div style={containerStyle}>
       <div className="header">
-        <div className="header-hi">{user && <h2>🙏 Hello <span style={{ color: "#D3FBD8" }}>{user.email}</span>!</h2>}</div>
+        <div className="header-hi">{user && <h2>🙏 Hello <span style={{ color: "#D3FBD8" }}>{user.name}</span>!</h2>}</div>
         <div className="header-button">
           {/* <button onClick={() => signOut(auth)}> SignOut</button> */}
           <Flex wrap="wrap" gap="small">

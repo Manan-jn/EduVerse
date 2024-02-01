@@ -16,68 +16,173 @@ import GoogleClassroomIntegration from "./ClassroomConnect";
 import AudioPlayer from "./AudioPlayer";
 import "./Home.css";
 import { Button, Flex } from 'antd';
+import { Spin } from 'antd';
+
 import { Alert, Space } from 'antd';
 import NewsBot from './Bots/NewsBot';
 import MentalHealthBot from "./Bots/MentalHealthBot";
 import MathsBot from "./Bots/MathsBot";
 import { Link } from 'react-router-dom';
 import { Route } from 'react-router-dom';
-
+import axios from "axios";
 
 const StudentDashboard = () => {
     const [user, setUser] = useState(null);
     const { currentUser } = useContext(AuthContext);
     const uid = currentUser.uid;
     const navigate = useNavigate();
+    const [tip, setTip] = useState("");
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        const getUser = () => {
-            const unsub = onSnapshot(
-                doc(firestore, "users", currentUser.uid),
-                (doc) => {
+        const getUser = async () => {
+            try {
+                setLoading(true);
+                const userDoc = doc(firestore, "students", currentUser.uid);
+                const unsubscribe = onSnapshot(userDoc, (doc) => {
                     setUser(doc.data());
+                    setLoading(false);
                     console.log(doc.data());
-                }
-            );
+                });
 
-            return () => {
-                unsub();
-            };
+                return () => {
+                    unsubscribe();
+                };
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+                setLoading(false);
+            }
         };
         currentUser.uid && getUser();
     }, [currentUser.uid]);
 
-    const handleDigital = () => {
-        navigate(`/digital`);
+    useEffect(() => {
+        const fetchTip = async () => {
+            if (user) {
+                const getData = {
+                    hours_learned: user.timeLearned,
+                    lectures_completed: user.lecturesCompleted,
+                    learning_streak: user.learningStreak,
+                };
+                console.log(getData);
+                try {
+                    const getTip = await axios.post(
+                        "https://ai-tip.onrender.com/tipStudent",
+                        getData,
+                        {
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                        }
+                    );
+                    setTip(getTip.data.tip);
+                } catch (err) {
+                    console.log(err);
+                }
+            }
+        };
+        fetchTip();
+    }, []);
+
+    const handleDigital = async () => {
+        try {
+            setLoading(true);
+            // Get the current date and time
+            const currentDate = new Date();
+            const currentTime = currentDate.getTime();
+
+            // Check if lastTimeAccessed is present and within the specified time range
+            if (
+                user &&
+                user.lastTimeAccessed &&
+                currentTime - user.lastTimeAccessed >= 24 * 60 * 60 * 1000 &&
+                currentTime - user.lastTimeAccessed <= 48 * 60 * 60 * 1000
+            ) {
+                // If lastTimeAccessed is present and the time difference is within 24-48 hours
+                // Update learning streak or add a new streak if it doesn't exist
+                const updatedLearningStreak = user.learningStreak
+                    ? user.learningStreak + 1
+                    : 1;
+
+                // Update user document in the database
+                const userDoc = doc(firestore, "students", currentUser.uid);
+                await updateDoc(userDoc, {
+                    lastTimeAccessed: currentTime,
+                    learningStreak: updatedLearningStreak,
+                });
+                console.log("Learning streak updated");
+            } else {
+                // If lastTimeAccessed is not present or the time difference is outside the specified range
+                // You can handle this case as per your requirements
+                const updatedLearningStreak = 1;
+                const userDoc = doc(firestore, "students", currentUser.uid);
+                await updateDoc(userDoc, {
+                    lastTimeAccessed: currentTime,
+                    learningStreak: updatedLearningStreak,
+                });
+                console.log("Learning streak updated");
+                setLoading(false);
+                navigate(`/digital`);
+            }
+        } catch (error) {
+            console.error("Error updating learning streak:", error);
+        }
     };
 
     return (
         <div>
-            {/* <h3 style={{ color: "#4E7691" }}>Welcome to the student dashboard 🧑‍🎓</h3> */}
-            {user && (
-                <div className="student-dashboard-stats">
-                    {/* <p>{user.email}</p>
-                    <p>{user.uid}</p> */}
-                    <Row gutter={16}>
-                        {user.timeLearned && (
-                            <Col span={12}>
-                                <Statistic title="Hours Learned" value={user.timeLearned} />
-                            </Col>
-                        )}
-                        {user.lecturesCompleted && (
-                            <Col span={12}>
-                                <Statistic
-                                    title="Lectures Completed"
-                                    value={user.lecturesCompleted}
-                                />
-                            </Col>
-                        )}
-                    </Row>
-                </div>
-            )}
             <div className="dashboard-classroom-morpheous-signimate">
                 <div className="dashboard-classroom-morpheous">
-                    <div className="dashboard-personalised"></div>
+                    <div className="dashboard-personalised">
+                        <div>
+                            {tip && (
+                                <div
+                                    style={{
+                                        width: "50%",
+                                        display: "flex",
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                    }}
+                                >
+                                    <Alert message="Tip" description={tip} type="success" showIcon />
+                                </div>
+                            )}
+                            {loading ? (
+                                <div className="text-center">
+                                    <Spin />
+                                </div>
+                            ) : (
+                                <div>
+                                    <div style={{ width: "100%" }}>
+                                        <Row gutter={20}>
+                                            {user && user.timeLearned && (
+                                                <Col span={12}>
+                                                    <Statistic title="Hours Learned" value={user.timeLearned} />
+                                                </Col>
+                                            )}
+                                            {user && user.lecturesCompleted && (
+                                                <Col span={12}>
+                                                    <Statistic
+                                                        title="Lectures Completed"
+                                                        value={user.lecturesCompleted}
+                                                    />
+                                                </Col>
+                                            )}
+                                            {user && user.learningStreak && (
+                                                <Col span={12}>
+                                                    <Statistic
+                                                        title="Learning Streak"
+                                                        value={user.learningStreak}
+                                                    />
+                                                </Col>
+                                            )}
+                                        </Row>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
                     <div className="classroom-morpheous">
                         <div className="classrooms">
                             <div><h2 style={{ color: "#6CFBCE" }}>📝 Smart Learning Hub 📝 </h2></div>
@@ -117,7 +222,7 @@ const StudentDashboard = () => {
                     />
                     <br></br>
                     <iframe
-                        src="https://ai-content.streamlit.app/?embed=true"
+                        src="https://ai-animator.streamlit.app/?embed=true"
                         height="700px"
                     ></iframe>
                 </div>
