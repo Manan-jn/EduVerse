@@ -106,7 +106,7 @@ const ParentDashboard = () => {
         return getTip.data.tip;
       } catch (error) {
         console.log(error);
-        return "Doing great!";
+        return "Your child is doing great! Its just GPT Limit Exceeded";
       }
     };
     const fetchChildren = async () => {

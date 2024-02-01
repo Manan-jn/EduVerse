@@ -62,6 +62,7 @@ const StudentDashboard = () => {
           );
           setTip(getTip.data.tip);
         } catch (err) {
+          setTip("You are doing great! Its just GPT Limit Exceeded");
           console.log(err);
         }
       }

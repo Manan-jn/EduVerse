@@ -111,6 +111,7 @@ const TeacherDashboard = () => {
           setTip(getTip.data.tip);
         } catch (e) {
           console.log(e);
+          setTip("You are doing great! Its just GPT Limit Exceeded");
         }
       }
     };
@@ -409,28 +410,37 @@ const TeacherDashboard = () => {
         </div>
       )}
       <div>
-        <div style={{ width: "50%" }}>
-          <div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <div style={{ marginRight: "50px" }}>
             <Label htmlFor="file-upload-helper-text" value="Upload file" />
           </div>
           <FileInput
             id="file-upload-helper-text"
             helperText="TXT File."
+            style={{ alignItems: "center" }}
             onChange={handleChange}
           />
+
+          <Button style={{ marginLeft: "20px" }} onClick={train}>
+            Train
+          </Button>
+          <div>
+            {loading && (
+              <Button>
+                <Spinner aria-label="loading" size="sm" />
+                <span className="pl-3" style={{ color: "black" }}>
+                  {trainingMsg}
+                </span>
+              </Button>
+            )}
+          </div>
         </div>
-        <Button onClick={train}>Train</Button>
-        <div>
-          {loading && (
-            <Button>
-              <Spinner aria-label="loading" size="sm" />
-              <span className="pl-3" style={{ color: "black" }}>
-                {trainingMsg}
-              </span>
-            </Button>
-          )}
-        </div>
-        {successMsg && <p>{successMsg}</p>}
         <div>
           {messagesReceived && messagesReceived.length > 0 && (
             <Card
