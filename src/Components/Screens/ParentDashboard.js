@@ -12,8 +12,9 @@ import {
   query,
 } from "firebase/firestore";
 import { AuthContext } from "../../context/AuthContext";
-import { Col, Row, Statistic } from "antd";
+import { Col, Row, Statistic, Alert } from "antd";
 import NavBar from "./NavBar";
+import axios from "axios";
 import {
   ListGroup,
   Card,
@@ -21,7 +22,6 @@ import {
   Modal,
   TextInput,
   Label,
-  Alert,
 } from "flowbite-react";
 
 const ParentDashboard = () => {
@@ -33,6 +33,7 @@ const ParentDashboard = () => {
   const [timeLearnedTotal, setTimeLearnedTotal] = useState([]);
   const [lecturesCompletedTotal, setLecturesCompletedTotal] = useState([]);
   const [learningStreakTotal, setLearningStreakTotal] = useState([]);
+  const [tips, setTips] = useState([]);
 
   const { currentUser } = useContext(AuthContext);
   const [successMsg, setSuccessMsg] = useState("");
@@ -86,10 +87,33 @@ const ParentDashboard = () => {
     fetchTeachers();
   }, []);
   useEffect(() => {
+    const fetchTip = async (timeLearned, lecturesCompleted, learningStreak) => {
+      const getData = {
+        hours_learned: timeLearned,
+        lectures_completed: lecturesCompleted,
+        learning_streak: learningStreak,
+      };
+      try {
+        const getTip = await axios.post(
+          "https://ai-tip.onrender.com/tipParent",
+          getData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        return getTip.data.tip;
+      } catch (error) {
+        console.log(error);
+        return "Doing great!";
+      }
+    };
     const fetchChildren = async () => {
       let newTimeLearnedTotal = [];
       let newLecturesCompletedTotal = [];
       let newLearningStreakTotal = [];
+      const foundTipsTotal = [];
 
       if (children !== undefined) {
         for (let i = 0; i < children.length; i++) {
@@ -99,8 +123,15 @@ const ParentDashboard = () => {
           newTimeLearnedTotal.push(docSnap.data().timeLearned || 0);
           newLecturesCompletedTotal.push(docSnap.data().lecturesCompleted || 0);
           newLearningStreakTotal.push(docSnap.data().learningStreak || 0);
+          const foundTip = await fetchTip(
+            docSnap.data().timeLearned || 0,
+            docSnap.data().lecturesCompleted || 0,
+            docSnap.data().learningStreak || 0
+          );
+          foundTipsTotal.push(foundTip);
         }
       }
+      setTips(foundTipsTotal);
       setTimeLearnedTotal(newTimeLearnedTotal);
       setLecturesCompletedTotal(newLecturesCompletedTotal);
       setLearningStreakTotal(newLearningStreakTotal);
@@ -171,17 +202,14 @@ const ParentDashboard = () => {
       <NavBar />
       {alertNot && (
         <Alert
-          color="warning"
-          withBorderAccent
-          onDismiss={() => {
+          message="Success!"
+          type="warning"
+          closable
+          onClose={() => {
             setAlertNot(false);
             setSuccessMsg("");
           }}
-        >
-          <span>
-            <span className="font-medium">Success Message</span> {successMsg}
-          </span>
-        </Alert>
+        />
       )}
       ParentDashboard
       <div>
@@ -207,26 +235,44 @@ const ParentDashboard = () => {
           learningStreakTotal &&
           childNames &&
           childNames.map((childName, index) => (
-            <Row key={index} gutter={16}>
-              <Col span={12}>
-                <Statistic
-                  title={`Hours Learned (${childName})`}
-                  value={timeLearnedTotal[index]}
+            <div>
+              <div
+                style={{
+                  width: "50%",
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Alert
+                  message="Tip"
+                  description={tips[index]}
+                  type="success"
+                  showIcon
                 />
-              </Col>
-              <Col span={12}>
-                <Statistic
-                  title={`Lectures Completed (${childName})`}
-                  value={lecturesCompletedTotal[index]}
-                />
-              </Col>
-              <Col span={12}>
-                <Statistic
-                  title={`Learning Streak (${childName})`}
-                  value={learningStreakTotal[index]}
-                />
-              </Col>
-            </Row>
+              </div>
+              <Row key={index} gutter={16}>
+                <Col span={12}>
+                  <Statistic
+                    title={`Hours Learned (${childName})`}
+                    value={timeLearnedTotal[index]}
+                  />
+                </Col>
+                <Col span={12}>
+                  <Statistic
+                    title={`Lectures Completed (${childName})`}
+                    value={lecturesCompletedTotal[index]}
+                  />
+                </Col>
+                <Col span={12}>
+                  <Statistic
+                    title={`Learning Streak (${childName})`}
+                    value={learningStreakTotal[index]}
+                  />
+                </Col>
+              </Row>
+            </div>
           ))}
         <Card className="max-w-sm">
           <div className="mb-4 flex items-center justify-between">

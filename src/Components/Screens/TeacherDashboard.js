@@ -7,7 +7,17 @@ import { Worker, Viewer } from "@react-pdf-viewer/core";
 import { AuthContext } from "../../context/AuthContext";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import { FallingLines } from "react-loader-spinner";
-import { Col, Row, Statistic } from "antd";
+import {
+  Col,
+  Row,
+  Statistic,
+  Alert,
+  Card,
+  Modal,
+  Form,
+  Input,
+  Button,
+} from "antd";
 import NavBar from "./NavBar";
 import axios from "axios";
 import {
@@ -23,7 +33,7 @@ import {
 } from "firebase/firestore";
 import { Bar } from "react-chartjs-2";
 import { Chart } from "chart.js/auto";
-import { FileInput, Label, Card, Alert, Button, Spinner } from "flowbite-react";
+import { FileInput, Label, Spinner } from "flowbite-react";
 
 const TeacherDashboard = () => {
   const [user, setUser] = useState({});
@@ -49,6 +59,9 @@ const TeacherDashboard = () => {
   const [messagesReceived, setMessagesReceived] = useState([]);
   const [alertNot, setAlertNot] = useState(false);
   const [trainingMsg, setTrainingMsg] = useState("Training in progress...");
+
+  const [tip, setTip] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
 
   const handleChange = (event) => {
     const file = event.target.files[0];
@@ -77,6 +90,32 @@ const TeacherDashboard = () => {
     };
     currentUser.uid && getUser();
   }, [currentUser.uid]);
+
+  useEffect(() => {
+    const fetchTip = async () => {
+      if (user) {
+        const getData = {
+          slides_uploaded: user.slidesTotal,
+          total_hours_learned: totalHoursObt,
+        };
+        try {
+          const getTip = await axios.post(
+            "https://ai-tip.onrender.com/tipTeacher",
+            getData,
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          setTip(getTip.data.tip);
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    };
+    fetchTip();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -166,8 +205,11 @@ const TeacherDashboard = () => {
               // Assuming totalHours is a field in your document
               totalHoursFromDoc = docSnap.data().totalHours;
               // Update global variable with total hours
-              if (totalHoursFromDoc !== NaN) {
-                setTotalHoursObt(totalHoursObt + totalHoursFromDoc);
+              // console.log("totalHoursFromDoc", totalHoursFromDoc);
+              if (totalHoursFromDoc !== undefined) {
+                const updatedTotalHours =
+                  parseInt(totalHoursObt, 10) + parseInt(totalHoursFromDoc);
+                setTotalHoursObt(updatedTotalHours);
               }
             } else {
               console.log("Document not found for slideId:", slideId);
@@ -242,6 +284,7 @@ const TeacherDashboard = () => {
         const blob = new Blob([out], { type: "application/pdf" });
         const temp = URL.createObjectURL(blob);
         setPdfUrl(temp);
+        setModalOpen(true);
       }
     } else {
       console.error(`Error: ${res.status} - ${res.statusText}`);
@@ -302,12 +345,12 @@ const TeacherDashboard = () => {
       if (docSnap.exists()) {
         const userData = docSnap.data();
         const existingArray = userData.uploadedSlides || [];
-        let slidesCount = userData.slidesTotal || 1;
+        let slidesCount = userData.slidesTotal || 0;
 
         if (!existingArray.includes(slideId)) {
           existingArray.push(slideId);
         }
-
+        slidesCount = slidesCount + 1;
         await updateDoc(docRef, {
           uploadedSlides: existingArray,
           slidesTotal: slidesCount,
@@ -327,6 +370,11 @@ const TeacherDashboard = () => {
       .then(() => {
         setSuccessMsg("Uploaded the slide");
         setAlertNot(true);
+        setModalOpen(false);
+        setComment("");
+        setTitle("");
+        setTimeToRead(0);
+        setSubject("biology");
       })
       .catch((e) => {
         console.log(e);
@@ -338,17 +386,27 @@ const TeacherDashboard = () => {
       <NavBar />
       {alertNot && (
         <Alert
-          color="warning"
-          withBorderAccent
-          onDismiss={() => {
+          message="Success!"
+          type="warning"
+          closable
+          onClose={() => {
             setAlertNot(false);
             setSuccessMsg("");
           }}
+        />
+      )}
+      {tip && (
+        <div
+          style={{
+            width: "50%",
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
         >
-          <span>
-            <span className="font-medium">Success Message</span> {successMsg}
-          </span>
-        </Alert>
+          <Alert message="Tip" description={tip} type="success" showIcon />
+        </div>
       )}
       <div>
         <div style={{ width: "50%" }}>
@@ -361,7 +419,7 @@ const TeacherDashboard = () => {
             onChange={handleChange}
           />
         </div>
-        <button onClick={train}>Train</button>
+        <Button onClick={train}>Train</Button>
         <div>
           {loading && (
             <Button>
@@ -375,25 +433,20 @@ const TeacherDashboard = () => {
         {successMsg && <p>{successMsg}</p>}
         <div>
           {messagesReceived && messagesReceived.length > 0 && (
-            <Card className="max-w-sm">
-              <div className="mb-4 flex aitems-center justify-between">
-                <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
-                  Messages From Parents
-                </h5>
-              </div>
-              <div className="flow-root">
-                <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+            <Card
+              title="Messages from Parents"
+              bordered={true}
+              style={{ width: 300 }}
+            >
+              <div>
+                <ul>
                   {messagesReceived.map((msg, index) => (
-                    <li key={index} className="py-3 sm:py-4">
-                      <div className="flex items-center space-x-4">
-                        <div className="shrink-0"></div>
-                        <div className="min-w-0 flex-1">
-                          <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
-                            Sender Name: {msg.sender}
-                          </p>
-                          <p className="truncate text-sm text-gray-500 dark:text-gray-400">
-                            {msg.message}
-                          </p>
+                    <li key={index}>
+                      <div>
+                        <div></div>
+                        <div>
+                          <p>Sender Name: {msg.sender}</p>
+                          <p>{msg.message}</p>
                         </div>
                       </div>
                     </li>
@@ -410,7 +463,7 @@ const TeacherDashboard = () => {
                 <Statistic title="Slides Uploaded" value={user.slidesTotal} />
               </Col>
             )}
-            {totalHoursObt !== NaN && totalHoursObt !== 0 && (
+            {user && totalHoursObt !== undefined && (
               <Col span={12}>
                 <Statistic title="Total Hours Learned" value={totalHoursObt} />
               </Col>
@@ -421,8 +474,72 @@ const TeacherDashboard = () => {
           <h2>Learning Streak Chart</h2>
           <canvas id="learningStreakChart" width="100px" height="50px"></canvas>
         </div>
-
-        {pdfUrl && (
+        <Modal title="Upload the Slides" open={modalOpen} footer="">
+          <div>
+            <Form>
+              <Form.Item
+                name="Title"
+                label="Title"
+                rules={[{ required: true, message: "Please input!" }]}
+              >
+                <input
+                  type="text"
+                  placeholder=""
+                  onChange={(e) => {
+                    setTitle(e.target.value);
+                  }}
+                />
+              </Form.Item>
+              <Form.Item
+                name="Subject"
+                label="Subject"
+                rules={[{ required: true, message: "Please input!" }]}
+              >
+                <select
+                  name="subject"
+                  value={subject}
+                  onChange={(event) => {
+                    setSubject(event.target.value);
+                  }}
+                >
+                  <option value="biology">biology</option>
+                  <option value="chemistry">chemistry</option>
+                  <option value="physics">physics</option>
+                  <option value="maths">maths</option>
+                </select>
+              </Form.Item>
+              <Form.Item
+                name="Time to read"
+                label="Time to complete (Hrs)"
+                rules={[{ required: true, message: "Please input!" }]}
+              >
+                <input
+                  type="number"
+                  placeholder="Time to read in hrs"
+                  onChange={(e) => {
+                    setTimeToRead(e.target.value);
+                  }}
+                />
+              </Form.Item>
+              <Form.Item
+                name="Comment/ Additional Info"
+                label="Comment/ Additional Info"
+                rules={[{ required: true, message: "Please input!" }]}
+              >
+                <input
+                  type="text"
+                  placeholder="Add comment"
+                  onChange={(e) => setComment(e.target.value)}
+                />
+              </Form.Item>
+            </Form>
+            <Button onClick={uploadInfo}>Upload</Button>
+            <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
+              <Viewer fileUrl={pdfUrl} />
+            </Worker>
+          </div>
+        </Modal>
+        {/* {pdfUrl && (
           <div>
             <input
               type="text"
@@ -460,7 +577,7 @@ const TeacherDashboard = () => {
               <Viewer fileUrl={pdfUrl} />
             </Worker>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

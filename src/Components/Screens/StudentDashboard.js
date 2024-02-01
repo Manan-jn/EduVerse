@@ -4,17 +4,19 @@ import { firestore } from "../../firebase-config";
 import { addDoc, collection, setDoc, doc, updateDoc } from "firebase/firestore";
 import { AuthContext } from "../../context/AuthContext";
 import { getDoc, onSnapshot } from "firebase/firestore";
-import { Col, Row, Statistic } from "antd";
+import { Col, Row, Statistic, Alert } from "antd";
 import { useNavigate } from "react-router-dom";
 import NavBar from "./NavBar";
 import { Spinner } from "flowbite-react";
 import CardTemp from "./CardTemp";
 import { Label, TextInput } from "flowbite-react";
+import axios from "axios";
 
 const StudentDashboard = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const { currentUser } = useContext(AuthContext);
+  const [tip, setTip] = useState("");
   const uid = currentUser.uid;
   const navigate = useNavigate();
 
@@ -40,9 +42,48 @@ const StudentDashboard = () => {
     currentUser.uid && getUser();
   }, [currentUser.uid]);
 
+  useEffect(() => {
+    const fetchTip = async () => {
+      if (user) {
+        const getData = {
+          hours_learned: user.timeLearned,
+          lectures_completed: user.lecturesCompleted,
+          learning_streak: user.learningStreak,
+        };
+        try {
+          const getTip = await axios.post(
+            "https://ai-tip.onrender.com/tipStudent",
+            getData,
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          setTip(getTip.data.tip);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    };
+    fetchTip();
+  }, []);
   return (
     <div>
       <NavBar />
+      {tip && (
+        <div
+          style={{
+            width: "50%",
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Alert message="Tip" description={tip} type="success" showIcon />
+        </div>
+      )}
       {loading ? (
         <div className="text-center">
           <Spinner aria-label="Center-aligned spinner example" />
