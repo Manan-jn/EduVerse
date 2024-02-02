@@ -13,13 +13,13 @@
     align-items: center;
   }
   
-  h2{
+  .h2Head{
     margin-bottom: -20px;
     text-shadow: 1px 1px 3px #333;
     animation: backanima 1.8s ease-out;
   }
   
-  h1{
+  .h1Head{
     font-size: 3rem;
     text-shadow: 2px 2px 3px #333;
     animation: backanima 1.8s ease-out;

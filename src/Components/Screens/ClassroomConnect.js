@@ -3,7 +3,7 @@ import { Button, Flex } from "antd";
 
 const YOUR_CLIENT_ID =
   "50545024716-tuchfr1dkldehq5p1d4sjbusi5rfeset.apps.googleusercontent.com";
-const YOUR_REDIRECT_URI = "http://localhost:3000/home";
+const YOUR_REDIRECT_URI = "https://edu-verse-nine.vercel.app/home";
 
 const GoogleClassroomIntegration = () => {
   const upcomingCoursesList = [];

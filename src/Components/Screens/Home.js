@@ -11,8 +11,8 @@ import StudentDashboard from "./StudentDashboard";
 import TeacherDashboard from "./TeacherDashboard";
 import ParentDashboard from "./ParentDashboard";
 import CommunityDashboard from "./CommunityDashboard";
-import "./Home.css"
-import { Button, Flex } from 'antd';
+import "./Home.css";
+import { Button, Flex } from "antd";
 import GoogleTranslate from "./GoogleTranslate";
 const Home = ({ route }) => {
   const [user, setUser] = useState({});
@@ -37,7 +37,7 @@ const Home = ({ route }) => {
     currentUser.uid && getUser();
   }, [currentUser.uid]);
 
-  const logout = async () => { };
+  const logout = async () => {};
 
   const containerStyle = {
     backgroundColor: "#323237",
@@ -47,18 +47,22 @@ const Home = ({ route }) => {
 
   return (
     <div style={containerStyle}>
-
       <div className="header">
-        <div className="header-hi">{user && <h2>🙏 Hello <span style={{ color: "#D3FBD8" }}>{user.name}</span>!</h2>}</div>
+        <div className="header-hi">
+          {user && (
+            <h2>
+              🙏 Hello <span style={{ color: "#D3FBD8" }}>{user.name}</span>!
+            </h2>
+          )}
+        </div>
         <div className="header-button">
           {/* <GoogleTranslate /> */}
 
           {/* <button onClick={() => signOut(auth)}> SignOut</button> */}
-          <Flex wrap="wrap" gap="small">
-            <Button type="primary" danger onClick={() => signOut(auth)}>
-              Sign Out
-            </Button>
-          </Flex>
+
+          <Button type="primary" danger onClick={() => signOut(auth)}>
+            Sign Out
+          </Button>
         </div>
       </div>
       <div className="dashboard">

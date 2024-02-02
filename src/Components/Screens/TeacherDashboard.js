@@ -415,20 +415,16 @@ const TeacherDashboard = () => {
           flexDirection: "row",
           width: "100%",
           alignItems: "center",
-          justifyContent: "space-between",
+          // justifyContent: "space-between",
         }}
       >
-        <div style={{ marginTop: "40px", width: "80%" }}>
+        {/* DIV FOR SHOWING THE STATS */}
+        <div
+          style={{ marginTop: "40px", width: "45%" }}
+          className="dashboard-personalised"
+        >
           {tip && (
-            <div
-              style={{
-                width: "100%",
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
+            <div style={{ marginBottom: "15px" }}>
               <Alert message="Tip" description={tip} type="success" showIcon />
             </div>
           )}
@@ -465,29 +461,106 @@ const TeacherDashboard = () => {
             ></canvas>
           </div>
         </div>
-        <GradingAssistant></GradingAssistant>
+        {/* DIV FOR GRADING ASSISTANT AND MESSAGES */}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            width: "60%",
+            alignItems: "center",
+          }}
+        >
+          <div className="dashboard-personalised">
+            <GradingAssistant></GradingAssistant>
+          </div>
+
+          {messagesReceived && messagesReceived.length > 0 && (
+            <div
+              style={{
+                backgroundColor: "#3f3f46",
+                borderRadius: "10px",
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "2%",
+                width: "60%",
+                margin: "1.5%",
+                marginTop: "2.5%",
+              }}
+            >
+              <Card
+                title="Messages from Parents"
+                bordered={true}
+                style={{ width: 300 }}
+              >
+                <div>
+                  <ul>
+                    {messagesReceived.map((msg, index) => (
+                      <li key={index}>
+                        <div>
+                          <div></div>
+                          <div>
+                            <p>Sender Name: {msg.sender}</p>
+                            <p>{msg.message}</p>
+                            {msg.phoneNum && <p>{msg.phoneNum}</p>}
+                          </div>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Card>
+            </div>
+          )}
+        </div>
       </div>
       <div>
         <div
           style={{
+            height: "90%",
+            backgroundColor: "#3f3f46",
+            borderRadius: "10px",
+            padding: "2%",
+            width: "120%",
+            margin: "1.5%",
+            marginTop: "2.5%",
             display: "flex",
-            flexDirection: "row",
+            flexDirection: "column",
             alignItems: "center",
           }}
         >
-          <div style={{ marginRight: "50px" }}>
-            <Label htmlFor="file-upload-helper-text" value="Upload file" />
-          </div>
-          <FileInput
-            id="file-upload-helper-text"
-            helperText="TXT File."
-            style={{ alignItems: "center" }}
-            onChange={handleChange}
-          />
-          <Button style={{ marginLeft: "20px" }} onClick={train}>
-            Train
-          </Button>
-          <div>
+          <p>
+            Digital Classroom
+            <p>
+              Upload a text file and convert it into simplified content through
+              GenAI
+            </p>
+          </p>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <div style={{ marginRight: "10px" }}>
+              <Label htmlFor="file-upload-helper-text" value="Upload file" />
+            </div>
+            <FileInput
+              id="file-upload-helper-text"
+              helperText="TXT File"
+              style={{ alignItems: "center" }}
+              onChange={handleChange}
+            />
+            <Button
+              type="primary"
+              style={{ marginLeft: "10px" }}
+              onClick={train}
+            >
+              Train
+            </Button>
+
             {loading && (
               <Button>
                 <Spinner aria-label="loading" size="sm" />
@@ -497,32 +570,6 @@ const TeacherDashboard = () => {
               </Button>
             )}
           </div>
-        </div>
-        <div>
-          {messagesReceived && messagesReceived.length > 0 && (
-            <Card
-              title="Messages from Parents"
-              bordered={true}
-              style={{ width: 300 }}
-            >
-              <div>
-                <ul>
-                  {messagesReceived.map((msg, index) => (
-                    <li key={index}>
-                      <div>
-                        <div></div>
-                        <div>
-                          <p>Sender Name: {msg.sender}</p>
-                          <p>{msg.message}</p>
-                          {msg.phoneNum && <p>{msg.phoneNum}</p>}
-                        </div>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </Card>
-          )}
         </div>
 
         <Modal title="Upload the Slides" open={modalOpen} footer="">
