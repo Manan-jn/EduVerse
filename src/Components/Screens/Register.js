@@ -6,15 +6,18 @@ import {
 import { firestore } from "../../firebase-config";
 import { addDoc, collection, setDoc, doc } from "firebase/firestore";
 import { useState } from "react";
+import { auth } from "../../firebase-config";
 import {
   Button,
-  Checkbox,
-  Label,
-  TextInput,
+  Cascader,
+  DatePicker,
+  Form,
+  Input,
+  InputNumber,
+  Mentions,
   Select,
-  Datepicker,
-} from "flowbite-react";
-import { auth } from "../../firebase-config";
+  TreeSelect,
+} from "antd";
 import { useNavigate } from "react-router-dom";
 import GoogleTranslate from "./GoogleTranslate";
 const Register = () => {
@@ -96,247 +99,217 @@ const Register = () => {
   };
 
   return (
-    <div>
+    <div
+      style={{
+        width: "100%",
+        display: "flex",
+        flex: 1,
+        flexDirection: "column",
+        alignItems: "center",
+        background: "url('https://source.unsplash.com/eNoeWZkO7Zc') no-repeat",
+        backgroundSize: "cover",
+        overflow: "hidden",
+        minHeight: "100vh",
+      }}
+    >
       <GoogleTranslate />
-      <form className="flex max-w-md flex-col gap-4" onSubmit={register}>
-        <div>
-          <div className="mb-2 block">
-            <Label htmlFor="name" value="Your Name" />
-          </div>
-          <TextInput
-            id="name"
-            type="text"
-            required
-            shadow
-            value={name}
-            onChange={(event) => {
-              setName(event.target.value);
-            }}
-          />
-        </div>
-        <div>
-          <div className="mb-2 block">
-            <Label htmlFor="email2" value="Your Email" />
-          </div>
-          <TextInput
-            id="email2"
-            type="email"
-            placeholder="abc@xyz.com"
-            required
-            shadow
-            value={email}
-            onChange={(event) => {
-              setEmail(event.target.value);
-            }}
-          />
-        </div>
-        <div>
-          <div className="mb-2 block">
-            <Label htmlFor="password2" value="Your Password" />
-          </div>
-          <TextInput
-            id="password2"
-            type="password"
-            required
-            shadow
-            value={password}
-            onChange={(event) => {
-              setPassword(event.target.value);
-            }}
-          />
-        </div>
-        <div className="mb-2 block">
-          <Label htmlFor="role" value="Your Role" />
-        </div>
-        <Select
-          id="role"
-          required
-          onChange={(event) => {
-            setRole(event.target.value);
-          }}
-        >
-          <option value="student">Student</option>
-          <option value="teacher">Teacher</option>
-          <option value="parent">Parent</option>
-          <option value="community">Community Member</option>
-        </Select>
-        {role === "student" && (
-          <div>
-            <div className="mb-2 block">
-              <Label htmlFor="dob" value="Your DOB" />
-            </div>
-            <Datepicker
-              id="dob"
-              required
+      <div
+        style={{
+          display: "flex",
+          height: "100%",
+          flexDirection: "column",
+          justifyContent: "space-evenly",
+          alignItems: "center",
+          marginTop: "6%",
+          padding: "50px",
+          backgroundColor: "white",
+          borderRadius: "20px",
+        }}
+      >
+        <h3>Register</h3>
+        <Form>
+          <Form.Item
+            label="Name"
+            name="Name"
+            rules={[{ required: true, message: "Please input!" }]}
+          >
+            <Input
+              type="text"
+              id="name"
+              value={name}
               onChange={(event) => {
-                setDOB(event.target.value);
+                setName(event.target.value);
               }}
-              weekStart={1} // Monday
             />
+          </Form.Item>
+          <Form.Item
+            label="Email"
+            name="Email"
+            rules={[{ required: true, message: "Please input!" }]}
+          >
+            <Input
+              id="email"
+              type="email"
+              placeholder="abc@xyz.com"
+              value={email}
+              onChange={(event) => {
+                setEmail(event.target.value);
+              }}
+            />
+          </Form.Item>
+          <Form.Item
+            label="Password"
+            name="Password"
+            rules={[{ required: true, message: "Please input!" }]}
+          >
+            <Input
+              id="password2"
+              type="password"
+              value={password}
+              onChange={(event) => {
+                setPassword(event.target.value);
+              }}
+            />
+          </Form.Item>
+          <Form.Item label="Role">
+            <Select
+              id="role"
+              onChange={(event) => {
+                console.log(event);
+                setRole(event);
+              }}
+            >
+              <Select.Option value="student">Student</Select.Option>
+              <Select.Option value="teacher">Teacher</Select.Option>
+              <Select.Option value="parent">Parent</Select.Option>
+              <Select.Option value="community">Community Member</Select.Option>
+            </Select>
+          </Form.Item>
+          {role === "student" && (
             <div>
-              <div className="mb-2 block">
-                <Label htmlFor="school" value="Your School" />
-              </div>
-              <TextInput
-                id="school"
-                type="text"
-                required
-                shadow
-                value={school}
-                onChange={(event) => {
-                  setSchool(event.target.value);
-                }}
-              />
+              {/* <Form.Item label="DOB">
+                <DatePicker
+                  onChange={(event) => {
+                    console.log(event);
+                    setDOB(event);
+                  }}
+                />
+              </Form.Item> */}
+              <Form.Item label="School">
+                <Input
+                  id="school"
+                  type="text"
+                  value={school}
+                  onChange={(event) => {
+                    setSchool(event.target.value);
+                  }}
+                />
+              </Form.Item>
+              <Form.Item label="City">
+                <Input
+                  id="city"
+                  type="text"
+                  value={city}
+                  onChange={(event) => {
+                    setCity(event.target.value);
+                  }}
+                />
+              </Form.Item>
+              <Form.Item label="Country">
+                <Input
+                  id="country"
+                  type="text"
+                  value={country}
+                  onChange={(event) => {
+                    setCountry(event.target.value);
+                  }}
+                />
+              </Form.Item>
             </div>
+          )}
+          {role === "teacher" && (
             <div>
-              <div className="mb-2 block">
-                <Label htmlFor="city" value="Your City" />
-              </div>
-              <TextInput
-                id="city"
-                type="text"
-                required
-                shadow
-                value={city}
-                onChange={(event) => {
-                  setCity(event.target.value);
-                }}
-              />
+              <Form.Item label="Class">
+                <Input
+                  id="class"
+                  type="text"
+                  value={tclass}
+                  onChange={(event) => {
+                    settClass(event.target.value);
+                  }}
+                />
+              </Form.Item>
+              <Form.Item label="Subject">
+                <Input
+                  id="subject"
+                  type="text"
+                  value={subject}
+                  onChange={(event) => {
+                    setSubject(event.target.value);
+                  }}
+                />
+              </Form.Item>
+              <Form.Item label="School">
+                <Input
+                  id="school"
+                  type="text"
+                  value={school}
+                  onChange={(event) => {
+                    setSchool(event.target.value);
+                  }}
+                />
+              </Form.Item>
+              <Form.Item label="City">
+                <Input
+                  id="city"
+                  type="text"
+                  value={city}
+                  onChange={(event) => {
+                    setCity(event.target.value);
+                  }}
+                />
+              </Form.Item>
+              <Form.Item label="Country">
+                <Input
+                  id="country"
+                  type="text"
+                  value={country}
+                  onChange={(event) => {
+                    setCountry(event.target.value);
+                  }}
+                />
+              </Form.Item>
             </div>
+          )}
+          {role === "community" && (
             <div>
-              <div className="mb-2 block">
-                <Label htmlFor="country" value="Your Country" />
-              </div>
-              <TextInput
-                id="country"
-                type="text"
-                required
-                shadow
-                value={country}
-                onChange={(event) => {
-                  setCountry(event.target.value);
-                }}
-              />
+              <Form.Item label="City">
+                <Input
+                  id="city"
+                  type="text"
+                  value={city}
+                  onChange={(event) => {
+                    setCity(event.target.value);
+                  }}
+                />
+              </Form.Item>
+              <Form.Item label="Country">
+                <Input
+                  id="country"
+                  type="text"
+                  value={country}
+                  onChange={(event) => {
+                    setCountry(event.target.value);
+                  }}
+                />
+              </Form.Item>
             </div>
-          </div>
-        )}
-        {role === "teacher" && (
-          <div>
-            <div>
-              <div className="mb-2 block">
-                <Label htmlFor="class" value="Your Class" />
-              </div>
-              <TextInput
-                id="class"
-                type="text"
-                required
-                shadow
-                value={tclass}
-                onChange={(event) => {
-                  settClass(event.target.value);
-                }}
-              />
-            </div>
-            <div>
-              <div className="mb-2 block">
-                <Label htmlFor="subject" value="Your Subject" />
-              </div>
-              <TextInput
-                id="subject"
-                type="text"
-                required
-                shadow
-                value={subject}
-                onChange={(event) => {
-                  setSubject(event.target.value);
-                }}
-              />
-            </div>
-            <div>
-              <div className="mb-2 block">
-                <Label htmlFor="school" value="Your School" />
-              </div>
-              <TextInput
-                id="school"
-                type="text"
-                required
-                shadow
-                value={school}
-                onChange={(event) => {
-                  setSchool(event.target.value);
-                }}
-              />
-            </div>
-            <div>
-              <div className="mb-2 block">
-                <Label htmlFor="city" value="Your City" />
-              </div>
-              <TextInput
-                id="city"
-                type="text"
-                required
-                shadow
-                value={city}
-                onChange={(event) => {
-                  setCity(event.target.value);
-                }}
-              />
-            </div>
-            <div>
-              <div className="mb-2 block">
-                <Label htmlFor="country" value="Your Country" />
-              </div>
-              <TextInput
-                id="country"
-                type="text"
-                required
-                shadow
-                value={country}
-                onChange={(event) => {
-                  setCountry(event.target.value);
-                }}
-              />
-            </div>
-          </div>
-        )}
-        {role === "community" && (
-          <div>
-            <div>
-              <div className="mb-2 block">
-                <Label htmlFor="city" value="Your City" />
-              </div>
-              <TextInput
-                id="city"
-                type="text"
-                required
-                shadow
-                value={city}
-                onChange={(event) => {
-                  setCity(event.target.value);
-                }}
-              />
-            </div>
-            <div>
-              <div className="mb-2 block">
-                <Label htmlFor="country" value="Your Country" />
-              </div>
-              <TextInput
-                id="country"
-                type="text"
-                required
-                shadow
-                value={country}
-                onChange={(event) => {
-                  setCountry(event.target.value);
-                }}
-              />
-            </div>
-          </div>
-        )}
-        <Button type="submit" style={{ color: "blue" }}>
-          Register new account
-        </Button>
-      </form>
+          )}
+          <Button type="primary" htmlType="submit" onClick={register}>
+            Register
+          </Button>
+        </Form>
+      </div>
     </div>
   );
 };
