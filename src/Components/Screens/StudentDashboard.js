@@ -82,7 +82,7 @@ const StudentDashboard = () => {
       }
     };
     fetchTip();
-  }, []);
+  }, [user]);
 
   const handleDigital = async () => {
     try {
