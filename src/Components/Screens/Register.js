@@ -16,7 +16,7 @@ import {
 } from "flowbite-react";
 import { auth } from "../../firebase-config";
 import { useNavigate } from "react-router-dom";
-
+import GoogleTranslate from "./GoogleTranslate";
 const Register = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -97,6 +97,7 @@ const Register = () => {
 
   return (
     <div>
+      <GoogleTranslate />
       <form className="flex max-w-md flex-col gap-4" onSubmit={register}>
         <div>
           <div className="mb-2 block">

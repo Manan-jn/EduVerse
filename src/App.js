@@ -8,7 +8,7 @@ import DigitalClassroom from "./Components/Screens/DigitalClassroom";
 import NewsBot from './Components/Screens/Bots/NewsBot';
 import MentalHealthBot from "./Components/Screens/Bots/MentalHealthBot";
 import MathsBot from "./Components/Screens/Bots/MathsBot";
-
+import LandingPage from "./Components/Screens/LandingPage.js";
 import {
   BrowserRouter as Router,
   Route,
@@ -36,7 +36,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LoginRoute element={<Login />} />} />
+        <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginRoute element={<Login />} />} />
         <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
         <Route path="/register" element={<Register />} />

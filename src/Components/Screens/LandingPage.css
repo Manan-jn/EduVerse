@@ -1,0 +1,150 @@
+  .content{
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    background: url('https://source.unsplash.com/eNoeWZkO7Zc') no-repeat;
+   background-size: cover;
+    min-height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  h2{
+    margin-bottom: -20px;
+    text-shadow: 1px 1px 3px #333;
+    animation: backanima 1.8s ease-out;
+  }
+  
+  h1{
+    font-size: 3rem;
+    text-shadow: 2px 2px 3px #333;
+    animation: backanima 1.8s ease-out;
+  }
+  
+  .button-lp{
+    animation: gradienteAnima 1.8s ease-in-out infinite alternate;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.5rem;
+    margin-top: 1rem;
+    color: #333;
+    font-weight: bold;
+    border-radius: 30px;
+    box-shadow: 1px 2px 5px #444;
+    cursor: pointer;
+    transition: 0.5s ease;
+    animation: backanima 1.8s ease-out;
+  }
+  
+  .button-lp:hover{
+    animation: slideBlack 1s ease 1 normal forwards;
+    transform: scale(1.03);
+    transition: transform 0.5s ease;
+  }
+  
+  @keyframes slideBlack{
+    to{
+      background-color: #000;
+    }
+  }
+  
+  @keyframes gradienteAnima {
+    0%{
+      background-position: 0% 0%;
+    }
+    100%{
+      background-position: 0% 100%;
+    }
+  }
+  
+  @keyframes backanima {
+    from{
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    to{
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+
+  .wordCarousel {
+    font-size: 36px;
+    color: #eee;
+    font-family: 'Work Sans', sans-serif;
+
+    div {
+        overflow: hidden;
+        position: relative;
+        float: right;
+        height: 65px;
+        padding-top: 10px;
+        margin-top: -10px;
+        li {
+            font-family: 'Work Sans', sans-serif;
+            color: #eee;
+            padding: 0 10px;
+            height: 45px;
+            margin-bottom: 45px;
+            display: block;
+        }
+    }
+}
+
+.flip2 { animation: flip2 6s cubic-bezier(0.23, 1, 0.32, 1.2) infinite; }
+.flip3 { animation: flip3 8s cubic-bezier(0.23, 1, 0.32, 1.2) infinite; }
+.flip4 { animation: flip4 10s cubic-bezier(0.23, 1, 0.32, 1.2) infinite; }
+.flip5 { animation: flip5 12s cubic-bezier(0.23, 1, 0.32, 1.2) infinite; }
+
+@keyframes flip2 {
+    0% { margin-top: -180px; }
+    5% { margin-top: -90px;  }
+    50% { margin-top: -90px; }
+    55% { margin-top: 0px; }
+    99.99% { margin-top: 0px; }
+    100% { margin-top: -180px; }
+}
+
+@keyframes flip3 {
+    0% { margin-top: -270px; }
+    5% { margin-top: -180px; }
+    33% { margin-top: -180px; }
+    38% { margin-top: -90px; }
+    66% { margin-top: -90px; }
+    71% { margin-top: 0px; }
+    99.99% { margin-top: 0px; }
+    100% { margin-top: -270px; }
+}
+
+@keyframes flip4 {
+    0% { margin-top: -360px; }
+    5% { margin-top: -270px; }
+    25% { margin-top: -270px; }
+    30% { margin-top: -180px; }
+    50% { margin-top: -180px; }
+    55% { margin-top: -90px; }
+    75% { margin-top: -90px; }
+    80% { margin-top: 0px; }
+    99.99% { margin-top: 0px; }
+    100% { margin-top: -360px; }
+}
+
+@keyframes flip5 {
+    0% { margin-top: -450px; }
+    5% { margin-top: -360px; }
+    20% { margin-top: -360px; }
+    25% { margin-top: -270px; }
+    40% { margin-top: -270px; }
+    45% { margin-top: -180px; }
+    60% { margin-top: -180px; }
+    65% { margin-top: -90px; }
+    80% { margin-top: -90px; }
+    85% { margin-top: 0px; }
+    99.99% { margin-top: 0px; }
+    100% { margin-top: -450px; }
+}

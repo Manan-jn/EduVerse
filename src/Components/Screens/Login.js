@@ -3,7 +3,7 @@ import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase-config";
-
+import GoogleTranslate from "./GoogleTranslate";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -26,6 +26,7 @@ const Login = () => {
 
   return (
     <div>
+      <GoogleTranslate />
       <h3>Login</h3>
       <input
         placeholder="Email"
