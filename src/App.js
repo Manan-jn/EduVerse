@@ -5,7 +5,7 @@ import Home from "./Components/Screens/Home";
 import { AuthContext } from "./context/AuthContext";
 import { useContext } from "react";
 import DigitalClassroom from "./Components/Screens/DigitalClassroom";
-import NewsBot from './Components/Screens/Bots/NewsBot';
+import NewsBot from "./Components/Screens/Bots/NewsBot";
 import MentalHealthBot from "./Components/Screens/Bots/MentalHealthBot";
 import MathsBot from "./Components/Screens/Bots/MathsBot";
 import LandingPage from "./Components/Screens/LandingPage.js";
@@ -21,7 +21,7 @@ function App() {
 
   const ProtectedRoute = ({ element }) => {
     if (!currentUser) {
-      return <Navigate to="/login" />;
+      return <Navigate to="/" />;
     }
     return element;
   };
@@ -44,7 +44,6 @@ function App() {
         <Route path="/mental" element={<MentalHealthBot />} />
         <Route path="/news" element={<NewsBot />} />
         <Route path="/maths" element={<MathsBot />} />
-
       </Routes>
     </Router>
   );
