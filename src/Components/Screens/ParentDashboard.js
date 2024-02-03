@@ -227,18 +227,18 @@ const ParentDashboard = () => {
         marginTop: "30px",
       }}
     >
-      {alertNot && (
-        <Alert
-          message="Success!"
-          type="warning"
-          closable
-          onClose={() => {
-            setAlertNot(false);
-            setSuccessMsg("");
-          }}
-        />
-      )}
       <div>
+        {alertNot && (
+          <Alert
+            message="Success!"
+            type="warning"
+            closable
+            onClose={() => {
+              setAlertNot(false);
+              setSuccessMsg("");
+            }}
+          />
+        )}
         {timeLearnedTotal &&
           lecturesCompletedTotal &&
           learningStreakTotal &&
@@ -261,6 +261,7 @@ const ParentDashboard = () => {
                   showIcon
                 />
               </div>
+
               <ConfigProvider
                 theme={{
                   token: {
