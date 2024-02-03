@@ -37,7 +37,7 @@ const Home = ({ route }) => {
     currentUser.uid && getUser();
   }, [currentUser.uid]);
 
-  const logout = async () => {};
+  const logout = async () => { };
 
   const containerStyle = {
     backgroundColor: "#323237",
@@ -56,7 +56,7 @@ const Home = ({ route }) => {
           )}
         </div>
         <div className="header-button">
-          {/* <GoogleTranslate /> */}
+          <GoogleTranslate />
 
           {/* <button onClick={() => signOut(auth)}> SignOut</button> */}
 
