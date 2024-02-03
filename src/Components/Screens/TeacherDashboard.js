@@ -21,6 +21,9 @@ import {
   Upload,
   Button,
   ConfigProvider,
+  Steps,
+  Badge,
+  Avatar,
 } from "antd";
 import axios from "axios";
 import {
@@ -34,6 +37,7 @@ import {
   query,
   getDocs,
 } from "firebase/firestore";
+import { MessageTwoTone } from "@ant-design/icons";
 import { Bar } from "react-chartjs-2";
 import { UploadOutlined } from "@ant-design/icons";
 import { Chart } from "chart.js/auto";
@@ -63,6 +67,8 @@ const TeacherDashboard = () => {
   const [messagesReceived, setMessagesReceived] = useState([]);
   const [alertNot, setAlertNot] = useState(false);
   const [trainingMsg, setTrainingMsg] = useState("Training in progress...");
+  const [currentStep, setCurrentStep] = useState(1);
+  const [showMessagesModal, setShowMessagesModal] = useState(false);
 
   const [tip, setTip] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
@@ -235,6 +241,7 @@ const TeacherDashboard = () => {
       method: "GET",
     });
     console.log(res);
+    setCurrentStep(2);
     if (res.ok) {
       const data = await res.json();
       setSlideId(data);
@@ -325,12 +332,14 @@ const TeacherDashboard = () => {
         setLoading(true);
         const uploaded = await uploadFile(file);
         setTrainingMsg("File uploaded...");
+        setCurrentStep(1);
         setProgress(20);
         console.log("uploaded" + uploaded);
         if (uploaded) {
           console.log("uploaded");
           const slides = await getSlides();
           setTrainingMsg("Generating Slides...");
+          setCurrentStep(3);
           console.log(slides);
           setProgress(60);
           if (slides) {
@@ -409,6 +418,7 @@ const TeacherDashboard = () => {
           }}
         />
       )}
+
       <div
         style={{
           display: "flex",
@@ -461,117 +471,157 @@ const TeacherDashboard = () => {
             ></canvas>
           </div>
         </div>
+
         {/* DIV FOR GRADING ASSISTANT AND MESSAGES */}
         <div
           style={{
             display: "flex",
             flexDirection: "column",
             width: "60%",
-            alignItems: "center",
+            alignItems: "flex-end",
           }}
         >
+          <Badge count={messagesReceived && messagesReceived.length}>
+            <Avatar
+              size="large"
+              onClick={() => {
+                setShowMessagesModal(true);
+              }}
+            >
+              <MessageTwoTone />
+            </Avatar>
+          </Badge>
           <div className="dashboard-personalised">
             <GradingAssistant></GradingAssistant>
           </div>
 
-          {messagesReceived && messagesReceived.length > 0 && (
+          <div
+            // style={{
+            //   height: "90%",
+            //   backgroundColor: "#3f3f46",
+            //   borderRadius: "10px",
+            //   padding: "2%",
+            //   width: "90%",
+            //   margin: "1.5%",
+            //   marginTop: "2.5%",
+            //   display: "flex",
+            //   flexDirection: "column",
+            //   alignItems: "center",
+            // }}
+            className="dashboard-personalised"
+          >
+            <p>
+              Digital Classroom
+              <p>
+                Upload a text file and convert it into simplified content
+                through GenAI
+              </p>
+            </p>
             <div
               style={{
-                backgroundColor: "#3f3f46",
-                borderRadius: "10px",
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "center",
-                justifyContent: "center",
-                padding: "2%",
-                width: "60%",
-                margin: "1.5%",
-                marginTop: "2.5%",
               }}
             >
-              <Card
-                title="Messages from Parents"
-                bordered={true}
-                style={{ width: 300 }}
-              >
+              {!loading && (
                 <div>
-                  <ul>
-                    {messagesReceived.map((msg, index) => (
-                      <li key={index}>
-                        <div>
-                          <div></div>
-                          <div>
-                            <p>Sender Name: {msg.sender}</p>
-                            <p>{msg.message}</p>
-                            {msg.phoneNum && <p>{msg.phoneNum}</p>}
-                          </div>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
+                  <div style={{ marginRight: "10px" }}>
+                    <Label
+                      htmlFor="file-upload-helper-text"
+                      value="Upload file"
+                    />
+                  </div>
+                  <FileInput
+                    id="file-upload-helper-text"
+                    helperText="TXT File"
+                    style={{ alignItems: "center" }}
+                    onChange={handleChange}
+                  />
                 </div>
-              </Card>
-            </div>
-          )}
-        </div>
-      </div>
-      <div>
-        <div
-          style={{
-            height: "90%",
-            backgroundColor: "#3f3f46",
-            borderRadius: "10px",
-            padding: "2%",
-            width: "120%",
-            margin: "1.5%",
-            marginTop: "2.5%",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <p>
-            Digital Classroom
-            <p>
-              Upload a text file and convert it into simplified content through
-              GenAI
-            </p>
-          </p>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <div style={{ marginRight: "10px" }}>
-              <Label htmlFor="file-upload-helper-text" value="Upload file" />
-            </div>
-            <FileInput
-              id="file-upload-helper-text"
-              helperText="TXT File"
-              style={{ alignItems: "center" }}
-              onChange={handleChange}
-            />
-            <Button
-              type="primary"
-              style={{ marginLeft: "10px" }}
-              onClick={train}
-            >
-              Train
-            </Button>
-
-            {loading && (
+              )}
+              {!loading && (
+                <Button
+                  type="primary"
+                  style={{ marginLeft: "10px" }}
+                  onClick={train}
+                >
+                  Train
+                </Button>
+              )}
+              {loading && (
+                <ConfigProvider
+                  theme={{
+                    token: {
+                      colorText: "white",
+                      colorTextDescription: "white",
+                      colorIcon: "white",
+                    },
+                  }}
+                >
+                  <Steps
+                    size="small"
+                    current={currentStep}
+                    items={[
+                      {
+                        title: "Uploaded",
+                      },
+                      {
+                        title: "Training",
+                      },
+                      {
+                        title: "Getting Slides",
+                      },
+                    ]}
+                  />
+                </ConfigProvider>
+              )}
+              {/* {loading && (
               <Button>
                 <Spinner aria-label="loading" size="sm" />
                 <span className="pl-3" style={{ color: "black" }}>
                   {trainingMsg}
                 </span>
               </Button>
-            )}
+            )} */}
+            </div>
           </div>
         </div>
-
+      </div>
+      <div>
+        <Modal
+          title="Messages from Parents"
+          open={showMessagesModal}
+          onCancel={() => setShowMessagesModal(false)}
+          footer=""
+        >
+          {messagesReceived && messagesReceived.length > 0 && (
+            <Card
+              // title="Messages from Parents"
+              bordered={true}
+              style={{ width: 300 }}
+            >
+              <div>
+                <ul>
+                  {messagesReceived.map((msg, index) => (
+                    <li key={index}>
+                      <div>
+                        <div></div>
+                        <div>
+                          <p>Sender Name: {msg.sender}</p>
+                          <p>{msg.message}</p>
+                          {msg.phone && <p>Contact Number: {msg.phone}</p>}
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Card>
+          )}
+        </Modal>
+      </div>
+      <div>
         <Modal title="Upload the Slides" open={modalOpen} footer="">
           <div>
             <Form>

@@ -25,6 +25,7 @@ import {
     Input,
 } from "antd";
 import axios from "axios";
+import './Home.css';
 
 const ParentDashboard = () => {
     const [childId, setChildId] = useState("");
@@ -223,77 +224,12 @@ const ParentDashboard = () => {
                 display: "flex",
                 width: "100%",
                 flexDirection: "row",
-                justifyContent: "space-around",
                 marginTop: "30px",
             }}
         >
-            {alertNot && (
-                <Alert
-                    message="Success!"
-                    type="warning"
-                    closable
-                    onClose={() => {
-                        setAlertNot(false);
-                        setSuccessMsg("");
-                    }}
-                />
-            )}
-            <div>
-                {timeLearnedTotal &&
-                    lecturesCompletedTotal &&
-                    learningStreakTotal &&
-                    childNames &&
-                    childNames.map((childName, index) => (
-                        <div>
-                            <div
-                                style={{
-                                    width: "70%",
-                                    display: "flex",
-                                    flexDirection: "row",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                }}
-                            >
-                                <Alert
-                                    message="Tip"
-                                    description={tips[index]}
-                                    type="success"
-                                    showIcon
-                                />
-                            </div>
-                            <ConfigProvider
-                                theme={{
-                                    token: {
-                                        colorText: "white",
-                                        colorTextDescription: "white",
-                                    },
-                                }}
-                            >
-                                <Row key={index} gutter={16}>
-                                    <Col span={12}>
-                                        <Statistic
-                                            title={`Hours Learned (${childName})`}
-                                            value={timeLearnedTotal[index]}
-                                        />
-                                    </Col>
-                                    <Col span={12}>
-                                        <Statistic
-                                            title={`Lectures Completed (${childName})`}
-                                            value={lecturesCompletedTotal[index]}
-                                        />
-                                    </Col>
-                                    <Col span={12}>
-                                        <Statistic
-                                            title={`Learning Streak (${childName})`}
-                                            value={learningStreakTotal[index]}
-                                        />
-                                    </Col>
-                                </Row>
-                            </ConfigProvider>
-                        </div>
-                    ))}
-
-                <div style={{ width: "60%" }}>
+            <div className="parent-dashboard-main">
+                <div className="parent-addstudent">
+                    <h2 style={{ color: "rgb(108, 251, 206)" }}><center>Add Child Info</center></h2>
                     <ConfigProvider
                         theme={{
                             token: {
@@ -331,51 +267,152 @@ const ParentDashboard = () => {
                                     }}
                                 />
                             </Form.Item>
-                            <Button style={{ color: "black" }} onClick={handleAddChild}>
-                                Add child
+                            <Button type="primary" style={{ color: "white" }} onClick={handleAddChild}>
+                                <b>Add child</b>
                             </Button>
                         </Form>
                     </ConfigProvider>
                 </div>
-                {children.length > 0 && mentalHealthReport && (
+                <div className="tip-stats" >
+                    {alertNot && (
+                        <Alert
+                            message="Success!"
+                            type="warning"
+                            closable
+                            onClose={() => {
+                                setAlertNot(false);
+                                setSuccessMsg("");
+                            }}
+                        />
+                    )}
                     <div>
-                        <h4>Mental Health Report:</h4>
-                        <p>{mentalHealthReport}</p>
+                        {timeLearnedTotal &&
+                            lecturesCompletedTotal &&
+                            learningStreakTotal &&
+                            childNames &&
+                            childNames.map((childName, index) => (
+                                <div>
+                                    <div
+                                        style={{
+                                            width: "70%",
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            justifyContent: "center",
+                                        }}
+                                    >
+                                        <Alert
+                                            message="Tip"
+                                            description={tips[index]}
+                                            type="success"
+                                            showIcon
+                                        />
+                                    </div>
+                                    <div style={{
+                                        display: "flex",
+                                        flexDirection: "row",
+                                        borderRadius: "10px",
+                                        marginLeft: "0.5%",
+                                        marginTop: "2%",
+                                        width: "70%",
+
+                                    }}>
+
+                                        <ConfigProvider
+                                            theme={{
+                                                token: {
+                                                    colorText: "white",
+                                                    colorTextDescription: "white",
+                                                },
+                                            }}
+                                        >
+                                            {/* <h2 style={{ color: "rgb(108, 251, 206)" }}><center>Child's Learning Dashboard</center></h2> */}
+
+                                            <Row key={index} gutter={16} style={{
+                                                padding: "2%",
+                                                backgroundColor: "black",
+                                                borderRadius: "10px",
+                                                marginLeft: "0.5%",
+                                            }}>
+
+                                                <Col span={12}>
+                                                    <Statistic
+                                                        title={`Hours Learned (${childName})`}
+                                                        value={timeLearnedTotal[index]}
+                                                    />
+                                                </Col>
+                                                <Col span={12}>
+                                                    <Statistic
+                                                        title={`Lectures Completed (${childName})`}
+                                                        value={lecturesCompletedTotal[index]}
+                                                    />
+                                                </Col>
+                                                <Col span={12}>
+                                                    <Statistic
+                                                        title={`Learning Streak (${childName})`}
+                                                        value={learningStreakTotal[index]}
+                                                    />
+                                                </Col>
+                                            </Row>
+                                        </ConfigProvider>
+
+                                        <div style={{
+                                            alignItems: "center",
+                                            justifyContent: "center",
+                                            padding: "2%",
+                                            backgroundColor: "#3f3f46",
+                                            borderRadius: "10px",
+                                            marginLeft: "3.5%",
+                                            display: "flex",
+                                            width: "56%",
+                                        }}>
+                                            <div>
+
+                                                <h2 style={{ color: "rgb(108, 251, 206)" }}>Mental Health Report</h2>
+
+                                                {mentalHealthReport && (
+                                                    <p>{mentalHealthReport}</p>
+                                                )}
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+
+
                     </div>
-                )}
+                </div>
             </div>
-            <div style={{ marginLeft: "50px" }}>
-                {teachers && teachers.length > 0 && (
-                    <Card
-                        title="Connect With Teachers"
-                        bordered={true}
-                        style={{ width: 300 }}
-                    >
-                        <div>
-                            <ul>
-                                {teachers.map((teacher, index) => (
-                                    <li key={index}>
-                                        <div>
-                                            <p>{teacher.name}</p>
-                                            <p>{teacher.email}</p>
-                                        </div>
-                                        <div>
-                                            <Button
-                                                onClick={() => {
-                                                    setOpenModal(true);
-                                                    setCurrentTeacher(teacher);
-                                                }}
-                                            >
-                                                Connect
-                                            </Button>
-                                        </div>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    </Card>
-                )}
-            </div>
+            {teachers && teachers.length > 0 && (
+                <Card
+                    title="Connect With Teachers"
+                    className="parent-teacherCard"
+                >
+                    <div className="parent-teacherCard">
+                        <ul>
+                            {teachers.map((teacher, index) => (
+                                <li key={index}>
+                                    <div>
+                                        <p>{teacher.name}&nbsp; &nbsp;<i>{teacher.email}</i></p>
+                                        <p>Subject: {teacher.subject}</p>
+                                    </div>
+                                    <div>
+                                        <Button
+                                            onClick={() => {
+                                                setOpenModal(true);
+                                                setCurrentTeacher(teacher);
+                                            }}
+                                        >
+                                            Connect
+                                        </Button>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </Card>
+            )}
+
             <Modal
                 title="Send Message"
                 open={openModal}

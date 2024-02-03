@@ -8,6 +8,7 @@
 
 .header-hi{
     padding-left: 2%;
+    color:white
 }
 
 .header-button{
@@ -185,3 +186,67 @@
     padding-left: 41%;
     padding-right: 60%;
 }
+
+.parent-addstudent{
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    padding: 2%;
+    background-color: #3f3f46;
+    border-radius:10px;
+    margin: 1.5%;
+    margin-top: 0%;
+    margin-left: 0%;
+}
+
+.parent-teacherCard{
+    /* display: flex;
+    width: 60%;
+    color:white;
+    font-size: medium;
+    flex-direction: column;
+    margin-left: 2%;
+    width: 43%;
+    background: "black"; */
+    color: white;
+    display: flex;
+    font-size: medium;
+    flex-direction: column;
+    margin-left: 2%;
+    width: 60%;
+    background-color: #3f3f46;
+    color: white;
+}
+
+.parent-dashboard-main{
+    display: flex;
+    flex-direction: column;
+    width: 108%;
+}
+.tip-stats{
+    display: flex;
+    flex-direction: column;
+    width:140%;
+}
+
+.parent-dashboard-main{
+    display: flex;
+    flex-direction: column;
+}
+
+.parent-addstudent{
+    display: flex;
+    flex-direction: column;
+    width: 93.5%;
+    padding: 2%;
+    margin-top: 0%;
+    border-radius: 10px;
+    background: #3f3f46;
+    margin: 0.5%;
+    margin-bottom: 2%;
+}
+/* display: flex;
+    flex-direction: column;
+    width: 40%; */
+
