@@ -239,61 +239,73 @@ const ParentDashboard = () => {
             }}
           />
         )}
-        {timeLearnedTotal &&
-          lecturesCompletedTotal &&
-          learningStreakTotal &&
-          childNames &&
-          childNames.map((childName, index) => (
-            <div>
-              <div
-                style={{
-                  width: "70%",
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Alert
-                  message="Tip"
-                  description={tips[index]}
-                  type="success"
-                  showIcon
-                />
-              </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            backgroundColor: "#3f3f46",
+            padding: "20px",
+            margin: "1.5%",
+          }}
+        >
+          {timeLearnedTotal &&
+            lecturesCompletedTotal &&
+            learningStreakTotal &&
+            childNames &&
+            childNames.map((childName, index) => (
+              <div>
+                <div
+                  style={{
+                    width: "70%",
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Alert
+                    message="Tip"
+                    description={tips[index]}
+                    type="success"
+                    showIcon
+                  />
+                </div>
 
-              <ConfigProvider
-                theme={{
-                  token: {
-                    colorText: "white",
-                    colorTextDescription: "white",
-                  },
-                }}
-              >
-                <Row key={index} gutter={16}>
-                  <Col span={12}>
-                    <Statistic
-                      title={`Hours Learned (${childName})`}
-                      value={timeLearnedTotal[index]}
-                    />
-                  </Col>
-                  <Col span={12}>
-                    <Statistic
-                      title={`Lectures Completed (${childName})`}
-                      value={lecturesCompletedTotal[index]}
-                    />
-                  </Col>
-                  <Col span={12}>
-                    <Statistic
-                      title={`Learning Streak (${childName})`}
-                      value={learningStreakTotal[index]}
-                    />
-                  </Col>
-                </Row>
-              </ConfigProvider>
-            </div>
-          ))}
-        {mentalHealthReport && (
+                <ConfigProvider
+                  theme={{
+                    token: {
+                      colorText: "white",
+                      colorTextDescription: "white",
+                    },
+                  }}
+                >
+                  <Row key={index} gutter={16}>
+                    <Col span={12}>
+                      <Statistic
+                        title={`Hours Learned (${childName})`}
+                        value={timeLearnedTotal[index]}
+                      />
+                    </Col>
+                    <Col span={12}>
+                      <Statistic
+                        title={`Lectures Completed (${childName})`}
+                        value={lecturesCompletedTotal[index]}
+                      />
+                    </Col>
+                    <Col span={12}>
+                      <Statistic
+                        title={`Learning Streak (${childName})`}
+                        value={learningStreakTotal[index]}
+                      />
+                    </Col>
+                  </Row>
+                </ConfigProvider>
+              </div>
+            ))}
+        </div>
+
+        {mentalHealthReport && children.length > 0 && (
           <div>
             <h4>Mental Health Report:</h4>
             <p>{mentalHealthReport}</p>
@@ -303,7 +315,6 @@ const ParentDashboard = () => {
           <ConfigProvider
             theme={{
               token: {
-                //   colorText: "white",
                 colorTextBase: "white",
               },
             }}
@@ -349,7 +360,7 @@ const ParentDashboard = () => {
           <Card
             title="Connect With Teachers"
             bordered={true}
-            style={{ width: 300 }}
+            style={{ width: 250 }}
           >
             <div>
               <ul>
