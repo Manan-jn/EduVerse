@@ -41,6 +41,13 @@ A dedicated bot keeps community members informed about their role in the nation'
 - **Frontend Deployment:** Vercel
 
 ## Architecture Diagrams
+### Overall Architecture Diagram
+![overall arch](https://github.com/Manan-jn/EduVerse/assets/72336990/2e0fe0fd-6b29-4425-b785-4e7ec961e317)
+
+### SignimateAI
+![Azure (2019) framework (1)](https://github.com/Manan-jn/EduVerse/assets/72336990/c30f0773-4c2e-461f-9626-e3e11a50d0e9)
+
+
 Find detailed methodology and architecture diagrams in the [presentation slides](https://docs.google.com/presentation/d/1uaV_GluitDFSPQUl95Dh15Uuwnhq4vxW8Vxhzc1zW5c/edit?usp=sharing).
 
 ## Deployment
