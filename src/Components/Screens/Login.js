@@ -72,6 +72,7 @@ const Login = () => {
           >
             <Input
               placeholder="Email"
+              type="email"
               onChange={(event) => {
                 setEmail(event.target.value);
               }}
@@ -83,6 +84,7 @@ const Login = () => {
           >
             <Input
               placeholder="Password"
+              type="password"
               onChange={(event) => {
                 setPassword(event.target.value);
               }}
