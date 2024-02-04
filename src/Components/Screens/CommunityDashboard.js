@@ -1,13 +1,17 @@
-import React from "react";
+import React from 'react';
+import './Home.css';
 
 const CommunityDashboard = () => {
     return (
-        <div>
-            <h3> CommunityDashboard</h3>
-            <p>Welcome to the  CommunityDashboard!</p>
-            {/* Add more content and features specific to the student dashboard */}
+        <div className="bot-iframe">
+            <iframe
+                width="350"
+                height="630"
+                allow="microphone;"
+                src="https://console.dialogflow.com/api-client/demo/embedded/952b9238-629c-49e8-91da-49fcaeb7ad4c"
+            ></iframe>
         </div>
     );
 };
 
-export default  CommunityDashboard;
+export default CommunityDashboard;

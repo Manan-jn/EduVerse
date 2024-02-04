@@ -69,7 +69,7 @@ const Home = ({ route }) => {
         {user.role === "student" && <StudentDashboard />}
         {user.role === "parent" && <ParentDashboard />}
         {user.role === "teacher" && <TeacherDashboard />}
-        {user.role === "communityMember" && <CommunityDashboard />}
+        {user.role === "community" && <CommunityDashboard />}
       </div>
     </div>
   );

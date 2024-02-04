@@ -44,6 +44,8 @@ function App() {
         <Route path="/mental" element={<MentalHealthBot />} />
         <Route path="/news" element={<NewsBot />} />
         <Route path="/maths" element={<MathsBot />} />
+        {/* <Route path="/communityinfo" element={<CommunityMember />} /> */}
+
       </Routes>
     </Router>
   );
