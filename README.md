@@ -13,4 +13,20 @@ https://edu-verse-nine.vercel.app/
  ## 📽️ Demo
  https://www.youtube.com/watch?v=DRC8Hl8FHNU
 
+ ### 💪 Motivation/Inspiration
+
+
+ 
+## 📥 Tech Stacks 
+
+```
+Frontend: ReactJS, CSS, Javascript
+
+Backend: NodeJS, Python
+
+Database: Google Firebase, MongoDB
+API: 
+
+```
+
  </p>
