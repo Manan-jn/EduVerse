@@ -17,6 +17,8 @@ import AudioPlayer from "./AudioPlayer";
 import "./Home.css";
 import { Button, Flex } from "antd";
 import { Spin, Form, Input } from "antd";
+import Quiz from "./../../assets/images/quiz.jpeg";
+import rewards from "./../../assets/images/rewards.png";
 
 import { Alert, Space } from "antd";
 import NewsBot from "./Bots/NewsBot";
@@ -345,9 +347,13 @@ const StudentDashboard = () => {
           agent-id="f87ce02e-9c46-4949-b3f7-6790c5c85906"
           language-code="en"
         ></df-messenger>
-        <div className="skills-corner"></div>
+        <div className="skills-corner">
+          <img src={Quiz} alt="quiz" />
+        </div>
 
-        <div className="competitions"></div>
+        <div className="competitions">
+          <img src={rewards} alt="rewards" />
+        </div>
       </div>
     </div>
   );
