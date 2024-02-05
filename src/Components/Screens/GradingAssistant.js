@@ -19,6 +19,7 @@ function GradingAssistant() {
 
   const handleSubmit = async () => {
     try {
+      setLoading(true);
       const formData = new FormData();
       formData.append("quiz_file", quizFile);
       formData.append("answer_key_file", answerKeyFile);
@@ -35,6 +36,7 @@ function GradingAssistant() {
       );
 
       setResult(response.data);
+      setLoading(false);
     } catch (error) {
       console.error("Error submitting files:", error);
     }
