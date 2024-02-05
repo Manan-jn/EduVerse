@@ -1,70 +1,66 @@
-# Getting Started with Create React App
+# EduVerse
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+EduVerse is a groundbreaking education platform that seamlessly connects students, teachers, parents, and community leaders to revolutionize the learning experience. This comprehensive solution incorporates innovative features, ensuring a holistic approach to education.
 
-## Available Scripts
+## Key Features
 
-In the project directory, you can run:
+### Animated Videos with Sign Language Support
+EduVerse can generate animated videos with sign language support from any text prompt, making learning accessible to all.
 
-### `npm start`
+### Nighttime Learning via Auditory Stimuli
+Harnessing the potential of REM waves, EduVerse generates audio stimuli for nighttime learning, providing a unique and immersive educational experience.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Personalized Learning Tips
+Students receive personalized tips to enhance their learning performance, offering targeted guidance for improvement.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Mental Health Support
+EduVerse offers a chatbot for students to seek mental health support when needed, fostering a supportive and inclusive learning environment.
 
-### `npm test`
+### Conversational Bots
+Engage with conversational bots for news updates and math assistance, enhancing the overall learning experience.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Teacher Dashboard
+Teachers can monitor students' progress on a comprehensive dashboard and receive tips to improve class engagement with children.
 
-### `npm run build`
+### AI Grading Assistant
+EduVerse's AI grading assistant provides scores and feedback for handwritten exams and essays, streamlining the assessment process.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Parental Alerts
+Parents receive alerts about potential mental health concerns based on chat history and can track their child's learning progress for informed involvement.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Community Information Bot
+A dedicated bot keeps community members informed about their role in the nation's educational policy and system.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Technology Stack
 
-### `npm run eject`
+- **Frontend:** Reactjs, CSS (AntDesign)
+- **Backend & Database:** Nodejs, Python & Firebase
+- **APIs:** GoogleTranslate, GoogleClassroom, OpenAI, News, WolframAlpha, GoogleReadAlong, FreeDictionary, GoogleTTS, Play.ht, FastAPI, GoogleCloud Vision
+- **3rd Party Tools:** Dialogflow, Manim, Marp, StreamLit
+- **Backend Deployment:** Render, Google CloudRun
+- **Frontend Deployment:** Vercel
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Architecture Diagrams
+### Overall Architecture Diagram
+![overall arch](https://github.com/Manan-jn/EduVerse/assets/72336990/2e0fe0fd-6b29-4425-b785-4e7ec961e317)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### SignimateAI
+![Azure (2019) framework (1)](https://github.com/Manan-jn/EduVerse/assets/72336990/c30f0773-4c2e-461f-9626-e3e11a50d0e9)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Deployment
 
-## Learn More
+- **Website:** [EduVerse](https://edu-verse-nine.vercel.app)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## How to Contribute
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+1. Fork the repository
+2. Clone the forked repository
+3. Make your changes
+4. Create a pull request
 
-### Code Splitting
+We welcome contributions to EduVerse to make education more accessible and engaging for all!
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## License
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This project is licensed under the [MIT License](LICENSE).
