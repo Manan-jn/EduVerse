@@ -1,12 +1,16 @@
 // GradingAssistant.js
 import React, { useState } from "react";
 import axios from "axios";
+import { Spin, Button, Card } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
+import { UploadOutlined } from "@ant-design/icons";
 
 function GradingAssistant() {
   const [quizFile, setQuizFile] = useState(null);
   const [answerKeyFile, setAnswerKeyFile] = useState(null);
   const [studentAnswers, setStudentAnswers] = useState(null);
   const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleFileUpload = (event, setFile) => {
     const file = event.target.files[0];
@@ -47,23 +51,45 @@ function GradingAssistant() {
       }}
     >
       <h1>Quiz Grader</h1>
-      <p>Quiz File/ Assignment File</p>
-      <input type="file" onChange={(e) => handleFileUpload(e, setQuizFile)} />
-      <p>Answer File</p>
-
-      <input
-        type="file"
-        onChange={(e) => handleFileUpload(e, setAnswerKeyFile)}
-      />
-      <p>Student File</p>
-
-      <input
-        type="file"
-        onChange={(e) => handleFileUpload(e, setStudentAnswers)}
-      />
-
-      <button onClick={handleSubmit}>Submit</button>
-
+      <Card style={{ backgroundColor: "#424464" }}>
+        <p style={{ color: "white" }}>Quiz File/ Assignment File</p>
+        <Button icon={<UploadOutlined />} type="primary">
+          <input
+            type="file"
+            onChange={(e) => handleFileUpload(e, setQuizFile)}
+          />
+        </Button>
+      </Card>
+      <Card style={{ backgroundColor: "#424464", marginTop: "10px" }}>
+        <p style={{ color: "white" }}>Answer Key File</p>
+        <Button icon={<UploadOutlined />} type="primary">
+          <input
+            type="file"
+            onChange={(e) => handleFileUpload(e, setAnswerKeyFile)}
+          />
+        </Button>
+      </Card>
+      <Card
+        style={{
+          backgroundColor: "#424464",
+          marginTop: "10px",
+          marginBottom: "10px",
+        }}
+      >
+        <p style={{ color: "white" }}>Student File</p>
+        <Button icon={<UploadOutlined />} type="primary">
+          <input
+            type="file"
+            onChange={(e) => handleFileUpload(e, setStudentAnswers)}
+          />
+        </Button>
+      </Card>
+      {loading && <Spin />}
+      {!loading && (
+        <Button type="primary" onClick={handleSubmit}>
+          Submit
+        </Button>
+      )}
       {result && (
         <div>
           <h2>Result:</h2>

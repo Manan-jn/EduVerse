@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import { auth } from "../../firebase-config";
 import { firestore } from "../../firebase-config";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
@@ -24,6 +24,8 @@ import {
   Steps,
   Badge,
   Avatar,
+  Space,
+  Tour,
 } from "antd";
 import axios from "axios";
 import {
@@ -55,6 +57,14 @@ const TeacherDashboard = () => {
   const [slideId, setSlideId] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  const tipRef = useRef(null);
+  const totalSlidesRef = useRef(null);
+  const learningHoursRef = useRef(null);
+  const streakChart = useRef(null);
+  const messageRequestRef = useRef(null);
+  const quizGraderRef = useRef(null);
+  const digiClassRef = useRef(null);
+
   const [comment, setComment] = useState("");
   const [title, setTitle] = useState("");
   const [timeToRead, setTimeToRead] = useState(0);
@@ -72,12 +82,54 @@ const TeacherDashboard = () => {
 
   const [tip, setTip] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
+  const [openTour, setOpenTour] = useState(true);
 
   const handleChange = (event) => {
     const file = event.target.files[0];
     console.log(file);
     setFile(file);
   };
+
+  const steps = [
+    {
+      title: "Personalised Tip",
+      description:
+        "See your personalised tip based on the slides uploaded and learning hours of students",
+      target: () => tipRef.current,
+    },
+    {
+      title: "Total Slides Uploaded",
+      description: "See the count of total slides you uploaded",
+      target: () => totalSlidesRef.current,
+    },
+    {
+      title: "Total Hours Learned",
+      description: "See the total hours learned based on your content",
+      target: () => learningHoursRef.current,
+    },
+    {
+      title: "Learning Streak Chart",
+      description: "See the learning streak of all students registered",
+      target: () => streakChart.current,
+    },
+    {
+      title: "Connection Requests",
+      description: "See the connection requests from parents",
+      target: () => messageRequestRef.current,
+    },
+    {
+      title: "AI Quiz Grader",
+      description:
+        "Provides scores and feedback for handwritten exams and essays, streamlining the assessment process for you",
+      target: () => quizGraderRef.current,
+    },
+    {
+      title: "Digital Classroom",
+      description:
+        "Upload complex text files and convert them into simplified content through GenAI",
+      target: () => digiClassRef.current,
+    },
+  ];
 
   useEffect(() => {
     const getUser = () => {
@@ -418,7 +470,7 @@ const TeacherDashboard = () => {
           }}
         />
       )}
-
+      <Tour open={openTour} steps={steps} onClose={() => setOpenTour(false)} />
       <div
         style={{
           display: "flex",
@@ -435,7 +487,13 @@ const TeacherDashboard = () => {
         >
           {tip && (
             <div style={{ marginBottom: "15px" }}>
-              <Alert message="Tip" description={tip} type="success" showIcon />
+              <Alert
+                message="Tip"
+                description={tip}
+                ref={tipRef}
+                type="success"
+                showIcon
+              />
             </div>
           )}
           <ConfigProvider
@@ -448,12 +506,17 @@ const TeacherDashboard = () => {
           >
             <Row gutter={20}>
               {user && user.slidesTotal && (
-                <Col span={12}>
+                <Col span={12} ref={totalSlidesRef}>
                   <Statistic title="Slides Uploaded" value={user.slidesTotal} />
                 </Col>
               )}
+              {!user.slidesTotal && (
+                <Col span={12} ref={totalSlidesRef}>
+                  <Statistic title="Slides Uploaded" value="0" />
+                </Col>
+              )}
               {user && totalHoursObt !== undefined && (
-                <Col span={12}>
+                <Col span={12} ref={learningHoursRef}>
                   <Statistic
                     title="Total Hours Learned"
                     value={totalHoursObt}
@@ -468,6 +531,7 @@ const TeacherDashboard = () => {
               id="learningStreakChart"
               width="100px"
               height="50px"
+              ref={streakChart}
             ></canvas>
           </div>
         </div>
@@ -481,17 +545,16 @@ const TeacherDashboard = () => {
             alignItems: "flex-end",
           }}
         >
-          <Badge count={messagesReceived && messagesReceived.length}>
-            <Avatar
-              size="large"
-              onClick={() => {
-                setShowMessagesModal(true);
-              }}
-            >
-              <MessageTwoTone />
-            </Avatar>
-          </Badge>
-          <div className="dashboard-personalised">
+          <Button
+            type="primary"
+            onClick={() => {
+              setShowMessagesModal(true);
+            }}
+            ref={messageRequestRef}
+          >
+            Connection Requests from Parents <MessageTwoTone />
+          </Button>
+          <div className="dashboard-personalised" ref={quizGraderRef}>
             <GradingAssistant></GradingAssistant>
           </div>
 
@@ -509,18 +572,25 @@ const TeacherDashboard = () => {
             //   alignItems: "center",
             // }}
             className="dashboard-personalised"
+            ref={digiClassRef}
           >
-            <p>
-              Digital Classroom
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <h2>Digital Classroom</h2>
               <p>
                 Upload a text file and convert it into simplified content
                 through GenAI
               </p>
-            </p>
+            </div>
             <div
               style={{
                 display: "flex",
-                flexDirection: "row",
+                flexDirection: "column",
                 alignItems: "center",
               }}
             >
@@ -532,23 +602,21 @@ const TeacherDashboard = () => {
                       value="Upload file"
                     />
                   </div>
-                  <FileInput
-                    id="file-upload-helper-text"
-                    helperText="TXT File"
-                    style={{ alignItems: "center" }}
-                    onChange={handleChange}
-                  />
+                  <Button icon={<UploadOutlined />} type="primary">
+                    <input type="file" onChange={handleChange} />
+                  </Button>
+                  {!loading && (
+                    <Button
+                      type="primary"
+                      style={{ marginLeft: "10px" }}
+                      onClick={train}
+                    >
+                      Train
+                    </Button>
+                  )}
                 </div>
               )}
-              {!loading && (
-                <Button
-                  type="primary"
-                  style={{ marginLeft: "10px" }}
-                  onClick={train}
-                >
-                  Train
-                </Button>
-              )}
+
               {loading && (
                 <ConfigProvider
                   theme={{
@@ -576,14 +644,6 @@ const TeacherDashboard = () => {
                   />
                 </ConfigProvider>
               )}
-              {/* {loading && (
-              <Button>
-                <Spinner aria-label="loading" size="sm" />
-                <span className="pl-3" style={{ color: "black" }}>
-                  {trainingMsg}
-                </span>
-              </Button>
-            )} */}
             </div>
           </div>
         </div>
