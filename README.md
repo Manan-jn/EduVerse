@@ -60,6 +60,16 @@ A dedicated bot keeps community members informed about their role in the nation'
 - **Backend Deployment:** Render, Google CloudRun
 - **Frontend Deployment:** Vercel
 
+## Student Dashboard
+<img width="1440" alt="Screenshot 2024-02-26 at 10 21 28 AM" src="https://github.com/Manan-jn/EduVerse/assets/72336990/fe3fec41-b603-419d-82e6-69101e7e3133">
+
+## Teacher Dashboard
+<img width="1303" alt="Screenshot 2024-02-26 at 10 53 26 AM" src="https://github.com/Manan-jn/EduVerse/assets/72336990/9743da61-0ff5-4259-8311-b36062cd01d2">
+
+## Parent Dashboard
+<img width="1303" alt="Screenshot 2024-02-26 at 10 57 16 AM" src="https://github.com/Manan-jn/EduVerse/assets/72336990/2f02176a-5686-46cb-995a-b6bc077c87e5">
+
+
 ## Architecture Diagrams
 ### Overall Architecture Diagram
 ![overall arch](https://github.com/Manan-jn/EduVerse/assets/72336990/2e0fe0fd-6b29-4425-b785-4e7ec961e317)
