@@ -5,6 +5,23 @@ EduVerse is a groundbreaking education platform that seamlessly connects student
 ## Backend Repo
 https://github.com/Manan-jn/EduVerse-Backend
 
+## Deployment
+- **Website:** [EduVerse](https://edu-verse-nine.vercel.app)
+
+## Installation
+
+Clone the repository
+
+```bash
+  git clone https://github.com/Manan-jn/EduVerse.git
+```
+Install the dependencies and start the server
+```bash
+  cd EduVerse
+  npm install
+  npm start
+```
+
 ## Key Features
 
 ### Animated Videos with Sign Language Support
@@ -50,19 +67,14 @@ A dedicated bot keeps community members informed about their role in the nation'
 ### SignimateAI
 ![Azure (2019) framework (1)](https://github.com/Manan-jn/EduVerse/assets/72336990/c30f0773-4c2e-461f-9626-e3e11a50d0e9)
 
+### Morpheus AI
+![morpheousai](https://github.com/Manan-jn/EduVerse/assets/72336990/ef0f6fe5-4f9f-4d43-bf21-eccccac88e1a)
 
-## Deployment
+### Digital Classroom (Text to slides generation)
+![digital classroom](https://github.com/Manan-jn/EduVerse/assets/72336990/dca4b4c3-b66e-4368-b46f-627c6a982529)
 
-- **Website:** [EduVerse](https://edu-verse-nine.vercel.app)
-
-## How to Contribute
-
-1. Fork the repository
-2. Clone the forked repository
-3. Make your changes
-4. Create a pull request
-
-We welcome contributions to EduVerse to make education more accessible and engaging for all!
+### AI Grading Assistant
+![ai-grading](https://github.com/Manan-jn/EduVerse/assets/72336990/45186572-e99f-4c0c-9b0c-6d0832458a19)
 
 ## License
 
