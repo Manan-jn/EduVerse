@@ -2,6 +2,9 @@
 
 EduVerse is a groundbreaking education platform that seamlessly connects students, teachers, parents, and community leaders to revolutionize the learning experience. This comprehensive solution incorporates innovative features, ensuring a holistic approach to education.
 
+## Backend Repo
+https://github.com/Manan-jn/EduVerse-Backend
+
 ## Key Features
 
 ### Animated Videos with Sign Language Support
