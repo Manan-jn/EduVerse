@@ -8,6 +8,8 @@ https://github.com/Manan-jn/EduVerse-Backend
 ## Deployment
 - **Website:** [EduVerse](https://edu-verse-nine.vercel.app)
 
+https://github.com/user-attachments/assets/eb5954bd-2cc0-46ee-9b79-3188a4f5705b
+
 ## Installation
 
 Clone the repository
